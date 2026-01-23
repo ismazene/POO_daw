@@ -16,6 +16,6 @@ public class PedirParametros {
         System.out.println("Cual es el sexo del paciente: ");
         char sexo = teclado.next().charAt(0);
 
-        
+
     }
 }
