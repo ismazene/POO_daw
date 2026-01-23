@@ -5,13 +5,12 @@ public class Libro {
     private static int cantidadLibros = 0;
     private static int librosDisponibles = 0;
 
-    private static final String CADENA_ID = "LIB";
+    private static final String ID_NOMBRE = "LIB";
 
     private String titulo;
     private String autor;
     private String id;
     private boolean disponible;
-
     private Estudiante estudiantePrestado;
 
     public Libro (String titulo, String autor){
@@ -25,7 +24,7 @@ public class Libro {
     }
 
     private String generarId (){
-        return CADENA_ID+cantidadLibros;
+        return ID_NOMBRE +cantidadLibros;
     }
 
     public void prestar(Estudiante estudiante){
@@ -116,9 +115,5 @@ public class Libro {
                 ", estudiante=" + estudiantePrestado +
                 '}';
     }
-
-
-
-
 
 }

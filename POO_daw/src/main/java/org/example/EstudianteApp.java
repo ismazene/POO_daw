@@ -25,7 +25,6 @@ public class EstudianteApp {
 
         System.out.println(divina_comedia);
 
-        ///  !!!!!!!!!!!!!!
         divina_comedia.prestar(jorge);
 
 
