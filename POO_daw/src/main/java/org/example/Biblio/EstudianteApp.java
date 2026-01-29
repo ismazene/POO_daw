@@ -9,6 +9,7 @@ public class EstudianteApp {
         System.out.println(jorge.getNia());
         System.out.println(jorge);
 
+        Editorial anaya = new Editorial("anaya", "españa");
         Estudiante raul = new Estudiante("raul");
 
         System.out.println(raul.getNia());
@@ -21,7 +22,9 @@ public class EstudianteApp {
         System.out.println(Estudiante.validarCorreo("patri@mutxamel.com"));
         System.out.println(Estudiante.validarCorreo("patri@alu.edu.gva.es"));
 
-        Libro divina_comedia = new Libro("divina comedia","dante ali", new Editorial("anaya" , "españa"));
+        Libro divina_comedia = new Libro("divina comedia","dante ali",anaya);
+
+        anaya.insertarLibro(divina_comedia);
 
         System.out.println(divina_comedia);
 

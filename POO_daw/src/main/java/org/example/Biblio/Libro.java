@@ -23,6 +23,7 @@ public class Libro {
         id = generarId();
         estudiantePrestado = null;
         this.editorial = editorial;
+        editorial.insertarLibro(this);
 
     }
     private String generarId() {
@@ -30,13 +31,13 @@ public class Libro {
     }
     public void prestar(Estudiante estudiante) {
 
-        if (disponible && estudiante.getLibro() != null) {
+        if (disponible && !estudiante.getListaLibros().contains(this)) {
             disponible = false;
             System.out.println("El libro " + titulo + " ha sido prestado a " + estudiante.getNombre() + " de " + estudiante.getCurso());
             librosDisponibles--;
             estudiantePrestado = estudiante;
-            estudiante.setLibro(this);
-        } else if (estudiante.getLibro() == null) {
+            estudiante.insertarLibro(this);
+        } else if (estudiante.getListaLibros().contains(this)) {
             System.out.println("El estudiante" + estudiante.getNombre() + "ya tiene un libro prestado" + estudiante.getCurso());
         } else {
             System.out.println("El libro " + titulo + " no está disponible.");
@@ -50,7 +51,7 @@ public class Libro {
             disponible = true;
             System.out.println("El libro " + titulo + " ha sido devuelto por " + estudiantePrestado.getNombre() + " de " + estudiantePrestado.getCurso());
             librosDisponibles++;
-            estudiantePrestado.setLibro(null);
+            estudiantePrestado.borrarLibro(null);
             estudiantePrestado = null;
         } else {
             System.out.println("El libro " + titulo + " está disponible. No se puede devolver.");
