@@ -1,12 +1,16 @@
 package chalet;
 
+import java.util.ArrayList;
+
 public class Habitacion {
     private String nombre;
-    private Double metros;
-
-    public Habitacion(String nombre, Double metros) {
+    private double metrosCuadrados;
+    private ArrayList<Electrodomestico> electrodomesticos;
+    public Habitacion(String nombre, double metrosCuadrados) {
         this.nombre = nombre;
-        this.metros = metros;
+        this.metrosCuadrados = metrosCuadrados;
+        electrodomesticos = new ArrayList<>();
+
     }
 
     public String getNombre() {
@@ -17,11 +21,27 @@ public class Habitacion {
         this.nombre = nombre;
     }
 
-    public Double getMetros() {
-        return metros;
+    public double getMetrosCuadrados() {
+        return metrosCuadrados;
     }
 
-    public void setMetros(Double metros) {
-        this.metros = metros;
+    public void setMetrosCuadrados(double metrosCuadrados) {
+        this.metrosCuadrados = metrosCuadrados;
+    }
+
+    public ArrayList<Electrodomestico> getElectrodomesticos() {
+        return electrodomesticos;
+    }
+
+    public void setElectrodomesticos(ArrayList<Electrodomestico> electrodomesticos) {
+        this.electrodomesticos = electrodomesticos;
+    }
+
+    @Override
+    public String toString() {
+        return "Habitacion{" +
+                "nombre='" + nombre + '\'' +
+                ", metrosCuadrados=" + metrosCuadrados +
+                '}';
     }
 }
