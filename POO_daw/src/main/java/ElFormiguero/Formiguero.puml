@@ -1,9 +1,5 @@
 @startuml
 
-' =====================
-' Clases
-' =====================
-
 class AppProgramas {
   +main(args : String[]) : void
 }
@@ -84,10 +80,6 @@ class Invitado {
   +setTemporada(temporada : int)
   +toString() : String
 }
-
-' =====================
-' Relaciones
-' =====================
 
 AppProgramas --> Cadena
 AppProgramas --> Programa
