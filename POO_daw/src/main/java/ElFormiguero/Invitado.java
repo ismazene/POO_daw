@@ -1,17 +1,22 @@
 package ElFormiguero;
 
-import imserso.Abuelo;
-
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Invitado {
 
     private String nombre;
     private String profesion;
-    private String fechaVisita;
+    private LocalDate fechaVisita;
     private int temporada;
 
+    /**
+     * Crea un invitado y pide la fecha
+     *
+     * @param nombre Nombre del invitado.
+     * @param profesion Profesion del invitado.
+     * @param temporada Temporada en la que participa
+     */
     public Invitado(String nombre, String profesion, int temporada) {
         this.nombre = nombre;
         this.profesion = profesion;
@@ -35,11 +40,11 @@ public class Invitado {
         this.profesion = profesion;
     }
 
-    public String getFechaVisita() {
+    public LocalDate getFechaVisita() {
         return fechaVisita;
     }
 
-    public void setFechaVisita(String fechaVisita) {
+    public void setFechaVisita(LocalDate fechaVisita) {
         this.fechaVisita = fechaVisita;
     }
 
@@ -51,21 +56,56 @@ public class Invitado {
         this.temporada = temporada;
     }
 
-    //Metodos
-
-    // Preguntar la fecha
+    /**
+     * Pide por consola la fecha de visita y lo valida.
+     */
     public void preguntarFecha() {
         Scanner teclado = new Scanner(System.in);
-        System.out.println("Introduce la fecha por favor con este formato (dd-mm-aaaa):");
-        String fecha = teclado.nextLine();
-        setFechaVisita(fecha);
+        boolean fechaValida = false;
+
+        while (!fechaValida) {
+            try {
+                System.out.print("Introduce el año por encima de 2026: ");
+                int anio = teclado.nextInt();
+                if (anio < 2026) {
+                    System.out.println("Año inválido, inténtalo de nuevo.");
+                    continue;
+                }
+
+                System.out.print("Introduce el mes del 1 al 12: ");
+                int mes = teclado.nextInt();
+                if (mes < 1 || mes > 12) {
+                    System.out.println("Mes inválido, inténtalo de nuevo.");
+                    continue;
+                }
+
+                System.out.print("Introduce el día: ");
+                int dia = teclado.nextInt();
+
+                // Intentamos crear la fecha
+                LocalDate fecha = LocalDate.of(anio, mes, dia);
+                setFechaVisita(fecha);
+                fechaValida = true;
+            } catch (Exception e) {
+                System.out.println("Día inválido, inténtalo de nuevo.");
+                teclado.nextLine();
+            }
+        }
     }
 
 
-
-
     @Override
+    /**
+     * Lo que se va a ver en la consola
+     *
+     * @return Cadena con los datos
+     */
     public String toString() {
-        return "Invitado{" + "nombre='" + nombre + '\'' + ", profesion='" + profesion + '\'' + ", fechaVisita='" + fechaVisita + '\'' + ", temporada=" + temporada + '}';
+        return "Invitado{" +
+                "nombre='" + nombre + '\'' +
+                ", profesion='" + profesion + '\'' +
+                ", fechaVisita=" + fechaVisita +
+                ", temporada=" + temporada +
+                '}';
     }
 }

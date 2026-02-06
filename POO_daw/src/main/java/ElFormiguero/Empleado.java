@@ -9,7 +9,13 @@ public class Empleado {
     private String cargo;
     private Empleado director;
 
-    // Constructor
+    /**
+     * Crea un empleado con id generado automaticamente.
+     *
+     * @param nombre Nombre del empleado.
+     * @param cargo Cargo del empleado.
+     * @param director Director asociado (si aplica).
+     */
     public Empleado(String nombre, String cargo, Empleado director) {
         this.id = generarId();
         this.nombre = nombre;
@@ -17,25 +23,33 @@ public class Empleado {
         setDirector(director);
     }
 
-    // Generar ID tipo EP1
+    /**
+     * Genera un identificador unico del empleado.
+     *
+     * @return Id con prefijo EP y contador.
+     */
     private String generarId() {
-        return String.format("EP", contador++);
+        return String.format("EP%03d", contador++);
     }
 
-    // Validar cargo
+    /**
+     * Establece el cargo si es valido y si no lo es pone "pte"
+     *
+     * @param cargo Cargo del empleado.
+     */
     public void setCargo(String cargo) {
-        if (cargo.equalsIgnoreCase("director") ||
-                cargo.equalsIgnoreCase("técnico") ||
-                cargo.equalsIgnoreCase("presentador") ||
-                cargo.equalsIgnoreCase("colaborador")) {
-
+        if (cargo.equalsIgnoreCase("director") || cargo.equalsIgnoreCase("tecnico") || cargo.equalsIgnoreCase("presentador") || cargo.equalsIgnoreCase("colaborador")) {
             this.cargo = cargo.toLowerCase();
         } else {
             this.cargo = "pte";
         }
     }
 
-    // Asignar director
+    /**
+     * Si el cargo es director, se deja en null.
+     *
+     * @param director Director asignado.
+     */
     public void setDirector(Empleado director) {
         if (this.cargo.equals("director")) {
             this.director = null;
@@ -44,32 +58,44 @@ public class Empleado {
         }
     }
 
-    /// Getter Setter
+
     public static int getContador() {
         return contador;
     }
-
     public static void setContador(int contador) {
         Empleado.contador = contador;
     }
-
     public String getId() {
         return id;
     }
-
     public String getNombre() {
+
         return nombre;
     }
-
     public void setNombre(String nombre) {
+
         this.nombre = nombre;
     }
-
     public String getCargo() {
+
         return cargo;
     }
-
     public Empleado getDirector() {
         return director;
+    }
+
+    @Override
+    /**
+     * Esto es lo que se muestra por consola
+     *
+     * @return Cadena con los datos del empleado.
+     */
+    public String toString() {
+        return "Empleado{" +
+                "id='" + id + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", cargo='" + cargo + '\'' +
+                ", director=" + director +
+                '}';
     }
 }

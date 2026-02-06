@@ -9,11 +9,12 @@ class Cadena {
   -listaProgramas : ArrayList<Programa>
 
   +Cadena(nombre : String)
+  +getListaProgramas() : ArrayList<Programa>
+  +setListaProgramas(listaProgramas : ArrayList<Programa>) : void
   +getNombre() : String
   +setNombre(nombre : String)
-  +getListaProgramas() : ArrayList<Programa>
-  +insertarPrograma(p : Programa) : void
-  +eliminarPrograma(p : Programa) : void
+  +insertarPrograma(programa : Programa) : void
+  +borrarPrograma(programa : Programa) : void
   +toString() : String
 }
 
@@ -27,32 +28,33 @@ class Programa {
 
   +Programa(nombre : String, cadena : Cadena, nombreDirector : String)
   +getNombre() : String
-  +setNombre(nombre : String)
   +getCadena() : Cadena
-  +setCadena(cadena : Cadena)
   +getTemporadas() : int
-  +setTemporadas(temporadas : int)
   +getListaEmpleados() : ArrayList<Empleado>
   +getListaInvitados() : ArrayList<Invitado>
-  +insertarEmpleado(nombre : String, cargo : String, director : Empleado) : void
+  +getDirector() : Empleado
+  +insertarEmpleado(empleados : Empleado...) : void
+  +borrarEmpleado(empleado : Empleado) : void
   +insertarInvitado(nombre : String, profesion : String, temporada : int) : void
-
+  +borrarInvitado(invitado : Invitado) : void
   +invitadosTemporada(temporada : int) : void
   +vecesInvitado(nombre : String) : int
   +rastrearInvitado(nombre : String) : void
   +buscarInvitado(nombre : String) : boolean
-  +invitadoAntes(nombre : String, otroPrograma : Programa) : void
-
   +toString() : String
 }
 
 class Empleado {
+  -contador : int {static}
   -id : String
   -nombre : String
   -cargo : String
   -director : Empleado
 
   +Empleado(nombre : String, cargo : String, director : Empleado)
+  -generarId() : String
+  +getContador() : int {static}
+  +setContador(contador : int) : void {static}
   +getId() : String
   +getNombre() : String
   +setNombre(nombre : String)
@@ -66,7 +68,7 @@ class Empleado {
 class Invitado {
   -nombre : String
   -profesion : String
-  -fecha_visita : LocalDate
+  -fechaVisita : LocalDate
   -temporada : int
 
   +Invitado(nombre : String, profesion : String, temporada : int)
@@ -74,10 +76,11 @@ class Invitado {
   +setNombre(nombre : String)
   +getProfesion() : String
   +setProfesion(profesion : String)
-  +getFecha_visita() : LocalDate
-  +setFecha_visita(fecha : LocalDate)
+  +getFechaVisita() : LocalDate
+  +setFechaVisita(fechaVisita : LocalDate)
   +getTemporada() : int
   +setTemporada(temporada : int)
+  +preguntarFecha() : void
   +toString() : String
 }
 
@@ -87,8 +90,8 @@ AppProgramas --> Programa
 Cadena "1" o-- "0..*" Programa : contiene
 Programa "1" --> "1" Cadena : pertenece
 
-Programa "1" *-- "0..*" Empleado : composición
-Programa "1" *-- "0..*" Invitado : composición
+Programa "1" *-- "0..*" Empleado : composicion
+Programa "1" *-- "0..*" Invitado : composicion
 
 Empleado "0..1" --> "1" Empleado : director
 
