@@ -25,8 +25,11 @@ public class Programa {
         /// director (Empleado) – créalo en el mismo constructor y añádelo a la listaEmpleados
         /// Por defecto, se crean con 0 temporadas y no tendremos empleados (excepto el director) ni
         /// invitados hasta que se vayan añadiendo conforme se va contratando o invitando.
-        director = new Empleado();
+        director = new Empleado("Director por defecto", "director", null);
         listaEmpleados.add(director);
+
+        cadena.insertarPrograma(this);
+
     }
 
     // Getters y Setters
@@ -63,12 +66,66 @@ public class Programa {
         listaEmpleados.remove(empleado);
     }
 
-    public void insertarInvitado(Invitado... invitados) {
-        listaInvitados.addAll(Arrays.asList(invitados));
+    //Anyadir empleados
+    public void insertarEmpleado(String nombre, String cargo) {
+        Empleado e = new Empleado(nombre, cargo, director);
+        listaEmpleados.add(e);
     }
 
+    //Borrar empleado
     public void borrarInvitado(Invitado invitado) {
         listaInvitados.remove(invitado);
+    }
+
+    //Invitados por temporada
+    public static void invitadosTemporada(ArrayList<Invitado> lista, int temporada) {
+        int contador = 0;
+        System.out.println("Invitados de la temporada " + temporada + ":");
+        for (Invitado invitado : lista) {
+
+            if (invitado.getTemporada() == temporada) {
+                contador++;
+                System.out.println(invitado.getNombre() + " - " + invitado.getProfesion());
+            }
+        }
+        System.out.println("Total de invitados: " + contador);
+    }
+
+    // Metodo que devuelve cuántas veces ha ido un invitado por su nombre
+    public static int vecesInvitado(ArrayList<Invitado> lista, String nombre) {
+        int contador = 0;
+        for (Invitado invitado : lista) {
+            if (invitado.getNombre().equalsIgnoreCase(nombre)) {
+                contador++;
+            }
+        }
+        return contador;
+    }
+
+    // Metodo rastrearInvitado
+    public static void rastrearInvitado(ArrayList<Invitado> lista, String nombre) {
+        int veces = vecesInvitado(lista, nombre);
+        System.out.println(nombre + " ha ido al programa " + veces + " veces.");
+
+        if (veces > 0) {
+            System.out.println("Detalles de las visitas:");
+            for (Invitado invitado : lista) {
+                if (invitado.getNombre().equalsIgnoreCase(nombre)) {
+                    System.out.println("- Fecha: " + invitado.getFechaVisita() + ", Temporada: " + invitado.getTemporada());
+                }
+            }
+        }
+    }
+
+    public static boolean buscarInvitado(ArrayList<Invitado> lista, String nombre) {
+        for (Invitado invitado : lista) {
+            if (invitado.getNombre().equalsIgnoreCase(nombre)) {
+                System.out.println(nombre + " ha acudido al programa.");
+                return true;
+            }
+        }
+        System.out.println(nombre + " No ha acudido al programa.");
+        return false;
     }
 
     @Override

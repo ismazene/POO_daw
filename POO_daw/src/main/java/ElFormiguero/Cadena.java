@@ -41,11 +41,6 @@ public class Cadena {
         listaProgramas.remove(Programa);
     }
 
-
-
-
-
-
     /// ToString
     @Override
     public String toString() {
