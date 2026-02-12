@@ -1,6 +1,6 @@
 package restaurante;
 
-public class Persona {
+public abstract class Persona {
     private String nombre;
     private String dni;
 
@@ -30,6 +30,8 @@ public class Persona {
     public void mostrarInfoPersona(){
         System.out.println("Persona con nombre " + nombre + " y con dni " + dni);
     }
+
+    public abstract void accerderBanyo();
 
 
     /// NO se suele utilizar el toString

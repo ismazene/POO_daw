@@ -35,6 +35,11 @@ public class Cliente extends Persona{
     }
 
     @Override
+    public void accerderBanyo() {
+        System.out.println("El clente se dirige al baño (vigilar)");
+    }
+
+    @Override
     public String toString() {
         return "Cliente{" +
                 "mesa=" + mesa +

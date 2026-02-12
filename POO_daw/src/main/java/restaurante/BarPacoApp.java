@@ -20,6 +20,7 @@ public class BarPacoApp {
         listaPersonal.add(patri);
         listaPersonal.add(izan);
         System.out.println(listaPersonal);
+
     }
 
     public static void entrarBar(Persona persona){

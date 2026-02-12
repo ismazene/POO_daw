@@ -6,7 +6,8 @@ public class Gerente extends Empleado{
         super(nombre, edad);
     }
 
+    @Override
     public void realizarTarea(){
-        System.out.println("Supervisando el proyecto y organizando reuniones");
+        System.out.println("Supervisando el proyecto y organizando reuniones.");
     }
 }

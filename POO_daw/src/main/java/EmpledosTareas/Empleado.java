@@ -1,12 +1,18 @@
 package EmpledosTareas;
 
 public class Empleado {
+
     private String nombre;
     private int edad;
 
-    public Empleado(String nombre, int edad) {
+    public Empleado(String nombre, int edad){
         this.nombre = nombre;
         this.edad = edad;
+
+    }
+
+    public void realizarTarea(){
+        System.out.println("Empleado realizando una tarea genérica.");
     }
 
     public String getNombre() {
@@ -24,7 +30,6 @@ public class Empleado {
     public void setEdad(int edad) {
         this.edad = edad;
     }
-
 
     @Override
     public String toString() {

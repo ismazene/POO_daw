@@ -1,38 +1,37 @@
 package EmpledosTareas;
 
-
 import java.util.ArrayList;
 
 public class TareasApp {
 
-
     static void main() {
 
+        ArrayList<Empleado> listaEmpleados = new ArrayList<>();
 
-        Empleado Ismael = new Desarrollador("Ismael", 20);
-        Empleado Izan = new Diseñador("Izan", 20);
-        Empleado Patricia = new Gerente("Patricia", 25);
+        Empleado ismael = new Gerente("Ismael", 20);
+        listaEmpleados.add(ismael);
 
-        ArrayList<Empleado> listaPersonal = new ArrayList<>();
+        Empleado izan = new Desarrollador("Izan", 20);
+        listaEmpleados.add(izan);
 
-        listaPersonal.add(Ismael);
-        listaPersonal.add(Izan);
-        listaPersonal.add(Patricia);
+        Empleado manuela = new Diseñador("Manuela", 19);
+        listaEmpleados.add(manuela);
 
-        System.out.println("== Usando el array polimórfico ===");
-        for (Empleado empleado : listaPersonal) {
-            realizarTarea();
+        System.out.println("=== USANDO EL ARRAY ===");
+        for (Empleado empleado : listaEmpleados){
+            empleado.realizarTarea();
+        }
+
+        System.out.println();
+
+        for (Empleado empleado : listaEmpleados){
+            asignarTarea(empleado);
         }
 
     }
 
-
-    public static void realizarTarea() {
-        System.out.println("Empleado realizando una tarea generica");
-    }
-
-    public static void asignarTarea(Empleado empleado) {
-        System.out.println("Asignando tarea al empleado...");
-        realizarTarea();
+    public static void asignarTarea(Empleado empleado){
+        System.out.println("Asignando tarea al empleado ...");
+        empleado.realizarTarea();
     }
 }
