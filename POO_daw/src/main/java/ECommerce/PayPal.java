@@ -32,16 +32,27 @@ public class PayPal extends MetodoPago{
 
     public void validarPayPal() throws InterruptedException {
         System.out.println("Dame tu correo:");
-        String correo = teclado.nextLine();  // ← CORRECTO
+        String correo = teclado.nextLine();
 
         if (correo.matches(CORREO_FORMAT)) {
             System.out.println("Validando correo...");
             Thread.sleep(3000);
             System.out.println("Correo válido");
-            this.cuenta = correo;  // guardamos el correo si es válido
+            this.cuenta = correo;
+            System.out.println("Introduce el importe a pagar: ");
+            double importe = teclado.nextDouble();
+
+            if (importe < getSaldo()){
+                System.out.println("Perfecto, efectuando pago de: " + importe);
+            } else {
+                System.out.println("Has pinchado, no tienes fondos suficientes, solo te quedan: " + getSaldo() + " €");
+            }
         } else {
             System.out.println("Lo siento, el correo es incorrecto");
         }
+    }
+    public void validarSaldo() throws InterruptedException {
+        System.out.println("El saldo actual es de: " + getSaldo());
     }
 
 
