@@ -17,4 +17,5 @@ public class Instituto {
     public void setPoblacion(String poblacion) {
         this.poblacion = Objects.requireNonNullElse(poblacion, "La población no puede ser nulo");
     }
+
 }
