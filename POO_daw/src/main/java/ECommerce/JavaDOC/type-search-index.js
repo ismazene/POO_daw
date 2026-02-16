@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html","k":"18"},{"p":"ECommerce","l":"AppEcommerce"},{"p":"ECommerce","l":"Bizum"},{"p":"ECommerce","l":"MetodoPago"},{"p":"ECommerce","l":"PayPal"},{"p":"ECommerce","l":"TarjetaCredito"},{"p":"ECommerce","l":"Tienda"}];updateSearchResults();

@@ -1,0 +1,70 @@
+@startuml
+  package ECommerce {
+
+  class AppEcommerce {
+    ~ {static} void main() throws InterruptedException
+  }
+
+  abstract class MetodoPago {
+    ~ {abstract} void procesarPago(double importe)
+  }
+
+  class Bizum {
+    - {static} Scanner teclado
+    - String telefono
+    - int pin
+    - Random random
+    ~ {static} {readOnly} int NUMERO_MAX
+
+    + Bizum(String telefono, int pin)
+    + String getTelefono()
+    + void setTelefono(String telefono)
+    + int getPin()
+    + void setPin(int pin)
+    + void validarPago() throws InterruptedException
+    ~ void procesarPago(double importe)
+  }
+
+  class PayPal {
+    ~ {static} Scanner teclado
+    - {static} {readOnly} String CORREO_FORMAT
+    - String cuenta
+    - double saldo
+
+    + PayPal(double saldo, String cuenta)
+    + String getCuenta()
+    + void setCuenta(String cuenta)
+    + double getSaldo()
+    + void setSaldo(double saldo)
+    + void validarPago() throws InterruptedException
+    ~ void procesarPago(double importe)
+  }
+
+  class TarjetaCredito {
+    ~ {static} Scanner teclado
+    ~ {static} {readOnly} int NUMERO_MAX
+    - String nro_tarjeta
+    - String tipoSeleccionado
+    ~ String[] tipoTarjetas
+
+    + TarjetaCredito(String nro_tarjeta)
+    + void validarPago() throws InterruptedException
+    + boolean validarTipo()
+    ~ void procesarPago(double importe)
+  }
+
+  class Tienda {
+    + {static} void iniciarPago() throws InterruptedException
+    - {static} void realizarPago() throws InterruptedException
+  }
+
+  MetodoPago <|-- Bizum
+  MetodoPago <|-- PayPal
+  MetodoPago <|-- TarjetaCredito
+
+  AppEcommerce ..> Tienda : usa
+  Tienda ..> Bizum : crea/usa
+  Tienda ..> PayPal : crea/usa
+  Tienda ..> TarjetaCredito : crea/usa
+  }
+  @enduml
