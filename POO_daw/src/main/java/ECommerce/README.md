@@ -1,6 +1,6 @@
  # ECommerce (Java)
 
-  Proyecto sencillo de consola en Java para simular pagos en una tienda.
+  Proyecto en Java para simular pagos en una tienda.
 
   ## Qué hace
 
@@ -21,7 +21,7 @@
   - PayPal.java: pago por PayPal.
   - TarjetaCredito.java: pago por tarjeta.
 
-  ## UML (resumen)
+  ## Resumen
 
   - MetodoPago es abstracta y define procesarPago(importe).
   - Bizum, PayPal y TarjetaCredito heredan de MetodoPago.
