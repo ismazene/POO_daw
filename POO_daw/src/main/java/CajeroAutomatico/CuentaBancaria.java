@@ -1,9 +1,5 @@
 package CajeroAutomatico;
 
-import CajeroAutomatico.DepositoMaximoException;
-import CajeroAutomatico.LimiteDiarioException;
-import CajeroAutomatico.SaldoInsuficienteException;
-
 public class CuentaBancaria {
 
     private double saldo;
