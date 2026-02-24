@@ -7,6 +7,12 @@ public class AppMonnegreFC {
         Jugador Jose = new Jugador("Jose", 23, Equipos.SENIOR, 15, Posiciones.DEFENSA);
         Jugador Manuel = new Jugador("Manuel", 26, Equipos.SENIOR, 1, Posiciones.PORTERO);
 
+        // Añadirlos a la lista
+        Jugador.listaJugadores.add(Ismael);
+        Jugador.listaJugadores.add(Izan);
+        Jugador.listaJugadores.add(Jose);
+        Jugador.listaJugadores.add(Manuel);
+
         Entrenador Juan = new Entrenador("Juan", 32, Equipos.SENIOR, "4-3-3");
 
         Masajista Enrique = new Masajista("Enrique", 26, "Fisioterapetuta", 4);
@@ -40,7 +46,7 @@ public class AppMonnegreFC {
         Juan.viajar("Mutxamel");
         Manuel.descansar();
 
-
+        AppMantenimiento.menu();
 
     }
 }

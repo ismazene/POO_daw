@@ -25,6 +25,7 @@ public class Tienda {
 
         switch (metodoPago) {
             case "bizum":
+
                 Bizum prueba3 = new Bizum("123456789", 123456);
                 prueba3.validarPago();
                 break;

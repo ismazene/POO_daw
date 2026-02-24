@@ -82,4 +82,15 @@ public class Jugador extends MonnegreFC implements AccionesDeportvas{
     public void jugarPartidos(String rival) {
         System.out.println("El jugador esta jugando partidos");
     }
+
+    @Override
+    public String toString() {
+        return "Jugador{" +
+                "nombre=" + getNombre() +
+                "edad=" + getEdad() +
+                "categoria=" + categoria +
+                ", dorsal=" + dorsal +
+                ", Posicion=" + Posicion +
+                '}';
+    }
 }
