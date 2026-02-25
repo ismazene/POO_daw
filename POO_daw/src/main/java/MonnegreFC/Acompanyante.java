@@ -1,6 +1,10 @@
 package MonnegreFC;
 
+import java.util.ArrayList;
+
 public class Acompanyante extends MonnegreFC{
+    public static ArrayList<Acompanyante> listaAcompanyantes = new ArrayList<>();
+
     private Jugador integrante;
     private String parentesco;
 
@@ -8,6 +12,7 @@ public class Acompanyante extends MonnegreFC{
         super(nombre, edad);
         this.integrante = integrante;
         this.parentesco = parentesco;
+        this.listaAcompanyantes = new ArrayList<>();
     }
 
     public Jugador getIntegrante() {
@@ -38,12 +43,18 @@ public class Acompanyante extends MonnegreFC{
     @Override
     public void viajar(String ciudad) {
         System.out.println("El acompañante esta viajando");
-
     }
-
     @Override
     public void celebrarGol() {
         System.out.println("El acompañante celebra el golazooo");
 
+    }
+
+    @Override
+    public String toString() {
+        return "Acompanyante{" +
+                "integrante=" + integrante +
+                ", parentesco='" + parentesco + '\'' +
+                '}';
     }
 }

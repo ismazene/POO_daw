@@ -14,6 +14,7 @@ public class Jugador extends MonnegreFC implements AccionesDeportvas{
         this.dorsal = dorsal;
         Posicion = posicion;
 
+
     }
 
     public Equipos getCategoria() {
@@ -28,11 +29,9 @@ public class Jugador extends MonnegreFC implements AccionesDeportvas{
         return dorsal;
     }
 
-//    public void setDorsal(int dorsal) {
-//        if (this.dorsal == dorsal){
-//            System.err.println("");
-//        }
-//    }
+    public void setDorsal(int dorsal) {
+        this.dorsal = dorsal;
+    }
 
     public Posiciones getPosicion() {
         return Posicion;
@@ -85,12 +84,10 @@ public class Jugador extends MonnegreFC implements AccionesDeportvas{
 
     @Override
     public String toString() {
-        return "Jugador{" +
-                "nombre=" + getNombre() +
-                "edad=" + getEdad() +
-                "categoria=" + categoria +
-                ", dorsal=" + dorsal +
-                ", Posicion=" + Posicion +
-                '}';
+        return  "Nombre: " + getNombre() +
+                ", Edad: " + getEdad() +
+                ", Categoría " + categoria +
+                ", Dorsal: " + dorsal +
+                ", Posicion: " + Posicion;
     }
 }
