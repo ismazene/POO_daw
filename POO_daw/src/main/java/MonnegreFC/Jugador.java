@@ -2,7 +2,7 @@ package MonnegreFC;
 
 import java.util.ArrayList;
 
-public class Jugador extends MonnegreFC implements AccionesDeportvas{
+public class Jugador extends MonnegreFC implements AccionesDeportivas, FuncionesIntegrantes {
   public static ArrayList<Jugador> listaJugadores = new ArrayList<>();
     private Equipos categoria;
     private int dorsal;
@@ -11,10 +11,8 @@ public class Jugador extends MonnegreFC implements AccionesDeportvas{
     public Jugador(String nombre, int edad, Equipos categoria, int dorsal, Posiciones posicion) {
         super(nombre, edad);
         this.categoria = categoria;
-        this.dorsal = dorsal;
+        compararDorsal(dorsal);
         Posicion = posicion;
-
-
     }
 
     public Equipos getCategoria() {
@@ -30,7 +28,7 @@ public class Jugador extends MonnegreFC implements AccionesDeportvas{
     }
 
     public void setDorsal(int dorsal) {
-        this.dorsal = dorsal;
+        compararDorsal(dorsal);
     }
 
     public Posiciones getPosicion() {
@@ -50,12 +48,15 @@ public class Jugador extends MonnegreFC implements AccionesDeportvas{
     public void marcarGol(){
         System.out.println("El jugador ha metido gol");
     }
+    public void compararDorsal(int dorsal){
+        for (Jugador jugador: listaJugadores) {
+            if (jugador.getDorsal() == dorsal && jugador.getCategoria().equals(categoria)){
+                throw new ModificarJugador();
+            }
+        }
+        this.dorsal = dorsal;
+    }
 
-//    public void compararDorsal(int dorsal){
-//        for (Jugador jugador: ) {
-//
-//        }
-//    }
     @Override
     public void concentrarse() {
         System.out.println("El jugador esta concentrando");

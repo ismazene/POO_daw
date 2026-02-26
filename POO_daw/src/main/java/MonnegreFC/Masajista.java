@@ -1,6 +1,6 @@
 package MonnegreFC;
 
-public class Masajista extends MonnegreFC{
+public class Masajista extends MonnegreFC implements FuncionesIntegrantes{
     private String titulacion;
     private int anosExperiencia;
 

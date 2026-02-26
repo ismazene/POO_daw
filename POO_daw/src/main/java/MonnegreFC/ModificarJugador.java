@@ -1,7 +1,7 @@
 package MonnegreFC;
 
 public class ModificarJugador extends RuntimeException {
-    public ModificarJugador(String message) {
+    public ModificarJugador() {
         super("El dorsal ya lo tiene un jugador...");
     }
 }

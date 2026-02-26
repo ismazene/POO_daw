@@ -1,6 +1,6 @@
 package MonnegreFC;
 
-public interface AccionesDeportvas {
+public interface AccionesDeportivas {
     void entrenar();
     void jugarPartidos(String rival);
 }

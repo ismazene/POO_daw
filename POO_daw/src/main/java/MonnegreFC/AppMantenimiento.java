@@ -5,10 +5,10 @@ import java.util.Scanner;
 public class AppMantenimiento {
     static Scanner teclado = new Scanner(System.in);
 
-    static void menu() {
+    static void main() {
+        AppMonnegreFC.main();
         menu1();
     }
-
     public static void menu1() {
         System.out.println("=== App de mantenimiento del MONNEGRE FC ===");
         System.out.println("      [1]. Mantenimiento de jugadores");
@@ -39,7 +39,7 @@ public class AppMantenimiento {
                 System.out.println("Esta opcion no esta disponible de momento");
                 break;
             case "4":
-                System.out.println("Esta opcion no esta disponible de momento");
+                consultarEquipos();
                 break;
             case "X":
                 System.exit(0);
@@ -105,6 +105,11 @@ public class AppMantenimiento {
         System.out.println("Selecciona una opcion");
         int opcionMenu1Case1 = teclado.nextInt();
 
+        if (opcionMenu1Case1 > Jugador.listaJugadores.size() - 1){
+            System.err.println("No existe un jugador en esa posicion");
+            mantenimientoJugadoresOpcion2();
+        }
+
         System.out.println("=== Mantenimiento de Jugadores. Modificar datos de jugador existente ===");
         System.out.println();
         Jugador jugadorSeleccionado = Jugador.listaJugadores.get(opcionMenu1Case1);
@@ -138,6 +143,7 @@ public class AppMantenimiento {
 
             case "DORSAL":
                 System.out.print("Nuevo dorsal: ");
+
                 int nuevoDorsal = teclado.nextInt();
                 jugadorSeleccionado.setDorsal(nuevoDorsal);
                 break;
@@ -236,5 +242,22 @@ public class AppMantenimiento {
 //        for (Acompanyante acompanyante : Acompanyante.listaAcompanyantes) {
 //            System.out.println(acompanyante);
 //        }
+    }
+
+    public static void consultarEquipos(){
+        for (int i = 0; i < Equipos.values().length; i++) {
+            System.out.println(Equipos.values()[i]);
+        }
+
+        System.out.println("Selecciona una opcion");
+        Equipos opcionEquipo = Equipos.valueOf(teclado.next().toUpperCase());
+
+        for (Jugador jugador: Jugador.listaJugadores) {
+            if (jugador.getCategoria().equals(opcionEquipo)){
+                System.out.println(jugador);
+            }
+        }
+
+
     }
 }

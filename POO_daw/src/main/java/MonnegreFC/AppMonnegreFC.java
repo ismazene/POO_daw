@@ -30,6 +30,7 @@ public class AppMonnegreFC {
         Ismael.descansar();
         Ismael.calentar();
         Ismael.jugarPartidos("Madrid");
+
         /// Animar
         Valentin.animarEquipo();
         Alex.animarEquipo();
@@ -46,7 +47,6 @@ public class AppMonnegreFC {
         Juan.viajar("Mutxamel");
         Manuel.descansar();
 
-        AppMantenimiento.menu();
 
     }
 }

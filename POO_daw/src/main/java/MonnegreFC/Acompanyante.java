@@ -2,7 +2,7 @@ package MonnegreFC;
 
 import java.util.ArrayList;
 
-public class Acompanyante extends MonnegreFC{
+public class Acompanyante extends MonnegreFC implements FuncionesIntegrantes{
     public static ArrayList<Acompanyante> listaAcompanyantes = new ArrayList<>();
 
     private Jugador integrante;

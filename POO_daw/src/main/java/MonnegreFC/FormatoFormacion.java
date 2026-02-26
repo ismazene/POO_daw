@@ -1,7 +1,7 @@
 package MonnegreFC;
 
 public class FormatoFormacion extends RuntimeException {
-    public FormatoFormacion(String message) {
-        super(message);
+    public FormatoFormacion() {
+        super("El formato de la formacion hacerlo bien");
     }
 }

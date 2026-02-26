@@ -1,13 +1,17 @@
 package MonnegreFC;
 
-public class Entrenador extends MonnegreFC implements AccionesDeportvas{
+import java.util.ArrayList;
+
+public class Entrenador extends MonnegreFC implements AccionesDeportivas, FuncionesIntegrantes {
+    public static ArrayList<Entrenador> listaEntrenadores = new ArrayList<>();
+
     private Equipos equipo;
     private String formacionPreferida;
 
     public Entrenador(String nombre, int edad, Equipos equipo, String formacionPreferida) {
         super(nombre, edad);
         this.equipo = equipo;
-        this.formacionPreferida = formacionPreferida;
+        formatoFormacion(formacionPreferida);
     }
 
     public Equipos getEquipo() {
@@ -23,14 +27,25 @@ public class Entrenador extends MonnegreFC implements AccionesDeportvas{
     }
 
     public void setFormacionPreferida(String formacionPreferida) {
-        this.formacionPreferida = formacionPreferida;
+        formatoFormacion(formacionPreferida);
     }
 
     public void planificarEntrenamiento(){
         System.out.println("El entrenador esta planiicando el entrenamiento");
     }
+
     public void hacerCambios(){
         System.out.println("El entrenador esta haciendo cambios");
+    }
+
+    public void formatoFormacion(String formacionPreferida){
+
+        if (formacionPreferida.matches("\\d-\\d-\\d")){
+            this.formacionPreferida = formacionPreferida;
+
+        } else {
+            throw new FormatoFormacion();
+        }
     }
 
     @Override
