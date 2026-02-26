@@ -156,6 +156,7 @@ public class AppMantenimiento {
 
             default:
                 System.out.println("Tienes que poner una opcion valida");
+                return;
         }
 
         System.out.println();
