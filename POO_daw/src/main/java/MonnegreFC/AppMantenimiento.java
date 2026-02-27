@@ -2,15 +2,25 @@ package MonnegreFC;
 
 import java.util.Scanner;
 
+
 public class AppMantenimiento {
     static Scanner teclado = new Scanner(System.in);
 
+    /**
+     * Es el main, no tiene mas
+     */
     static void main() {
         AppMonnegreFC.main();
         menu1();
     }
+
+    /**
+     * Este es el menu principal, es el primero que se muestra y de aqui se llama a todos los
+     * demás metodos, se pide una opcion y se hace un switch case para saber cual ha elegido, solo trabajamos con la primera como tal
+     */
     public static void menu1() {
         System.out.println("=== App de mantenimiento del MONNEGRE FC ===");
+        System.out.println();
         System.out.println("      [1]. Mantenimiento de jugadores");
         System.out.println("             Dentro podremos añadir jugadores, modificar datos y añadir acompañantes (sólo seniors).");
         System.out.println("      [2]. Mantenimiento de entrenadores (añadir-modificar-salir)");
@@ -20,8 +30,7 @@ public class AppMantenimiento {
         System.out.println("      [4]. Consultar equipos");
         System.out.println("            Dentro se deben listar los tipos de equipos del club y elegir uno.");
         System.out.println("      [x]. Salir");
-
-
+        System.out.println();
         System.out.println("===================================================");
         System.out.println();
 
@@ -34,9 +43,13 @@ public class AppMantenimiento {
                 break;
             case "2":
                 System.out.println("Esta opcion no esta disponible de momento");
+                System.out.println();
+                menu1();
                 break;
             case "3":
                 System.out.println("Esta opcion no esta disponible de momento");
+                System.out.println();
+                menu1();
                 break;
             case "4":
                 consultarEquipos();
@@ -45,9 +58,18 @@ public class AppMantenimiento {
                 System.exit(0);
             default:
                 System.out.println("Porfavor selecciona una opcion valida...");
+                System.out.println();
+                menu1();
         }
     }
 
+    /**
+     * Como he dicho0 antes aqui es donde se hace el submenu para el mantenimiento de los jugadores
+     * funciona como el primer menu, pides una opcion y dentro del switch case haces algo con esa opcion, en mi caso llamo siempre
+     * a un tercer menu
+     *
+     * Nunca dejo que termine el menu
+     */
     public static void mantenimientoJugadores() {
         System.out.println("=== Mantenimiento de Jugadores ===");
         System.out.println();
@@ -77,12 +99,21 @@ public class AppMantenimiento {
 
                 break;
             case "X":
-
+                menu1();
+                System.out.println();
             default:
                 System.out.println("Porfavor selecciona una opcion valida...");
+                System.out.println();
+                mantenimientoJugadores();
         }
     }
 
+    /**
+     * Si el usuario selecciona la segunda opcion del menu anterior aparece esta parte de codigo en la que el usuario
+     * elige a quien hacerle los cambios
+     *
+     * Solo pregunta por el jugador
+     */
     public static void mantenimientoJugadoresOpcion2() {
         System.out.println("=== Mantenimiento de Jugadores. Modificar datos de jugador existente ===");
         System.out.println();
@@ -98,6 +129,16 @@ public class AppMantenimiento {
         mantenimientoJugadoresSeleccionarJugador();
     }
 
+    /**
+     * Esta es un submenu de mantenimientoJugadoresOpcion2 aquí es donde se hace la logica para cambiar algún parametro del jugador
+     * Como ya he mostrado antes la lista de jugadores ahora espero una opcion (int) dependiendo de la opcion hace un caso del switch o otro
+     *
+     * Nombre: Pide un nuevo nombre y lo modifica con un set
+     * Edad: Pide un número y lo modifica con un set
+     * Categoria: Este es diferente porque las categorias son un enum, entonces primero convertimos a enum con el valueOf
+     * Dorsal: Pide un número (dorsal) y lo modifica con un set
+     * Posicion: Igual que categoria son de tipo enum entonces tenemos que hacer un valueOf
+     */
     public static void mantenimientoJugadoresSeleccionarJugador() {
         System.out.println("===================================================");
         System.out.println();
@@ -107,6 +148,7 @@ public class AppMantenimiento {
 
         if (opcionMenu1Case1 > Jugador.listaJugadores.size() - 1){
             System.err.println("No existe un jugador en esa posicion");
+            System.out.println();
             mantenimientoJugadoresOpcion2();
         }
 
@@ -128,35 +170,41 @@ public class AppMantenimiento {
                 System.out.print("Nuevo nombre: ");
                 String nuevoNombre = teclado.nextLine();
                 jugadorSeleccionado.setNombre(nuevoNombre);
-                break;
+                System.out.println();
+                mantenimientoJugadores();
 
             case "EDAD":
                 System.out.print("Nueva edad: ");
-                jugadorSeleccionado.setEdad(teclado.nextInt());
-                break;
+                int nuevaEdad = teclado.nextInt();
+                jugadorSeleccionado.setEdad(nuevaEdad);
+                System.out.println();
+                mantenimientoJugadores();
 
             case "CATEGORIA":
                 System.out.print("Nueva categoría: ");
                 String nuevaCategoria = teclado.next().toUpperCase();
                 jugadorSeleccionado.setCategoria(Equipos.valueOf(nuevaCategoria));
-                break;
+                System.out.println();
+                mantenimientoJugadores();
 
             case "DORSAL":
                 System.out.print("Nuevo dorsal: ");
-
                 int nuevoDorsal = teclado.nextInt();
                 jugadorSeleccionado.setDorsal(nuevoDorsal);
-                break;
+                System.out.println();
+                mantenimientoJugadores();
 
             case "POSICION":
                 System.out.print("Nueva posición: ");
                 String nuevaPosicion = teclado.next().toUpperCase();
                 jugadorSeleccionado.setPosicion(Posiciones.valueOf(nuevaPosicion));
-                break;
+                System.out.println();
+                mantenimientoJugadores();
 
             default:
                 System.out.println("Tienes que poner una opcion valida");
-                return;
+                System.out.println();
+                mantenimientoJugadoresSeleccionarJugador();
         }
 
         System.out.println();
@@ -164,6 +212,11 @@ public class AppMantenimiento {
         System.out.println(jugadorSeleccionado);
     }
 
+    /**
+     * Aqui hacemos lo de crear a un nuevo jugador y lo guardamos en la lista que ya tenemos
+     * lo mismo que arriba a los tipo enum un valueOf y lo demas solo con el set, despues solo mostramos los jugadores
+     * que tenemos y ya
+     */
     public static void mantenimientoJugadoresOpcion1() {
         System.out.println("=== Mantenimiento de Jugadores. Añadir un nuevo jugador ===");
         System.out.println();
@@ -179,6 +232,7 @@ public class AppMantenimiento {
         System.out.print("Categoria: ");
         String categoriaTexto = teclado.next().toUpperCase();
         Equipos categoria = Equipos.valueOf(categoriaTexto);
+
 
         System.out.print("Dorsal: ");
         int dorsal = teclado.nextInt();
@@ -197,13 +251,16 @@ public class AppMantenimiento {
         for (Jugador jugador : Jugador.listaJugadores) {
             System.out.println(jugador);
         }
+        System.out.println();
+        mantenimientoJugadores();
     }
 
+    /**
+     * Este metodo es casi una copia de mantenimientoJugadoresOpcion1 solo que en este caso con acompañantes
+     */
     public static void mantenimientoJugadoresOpcion3() {
         System.out.println("=== Crear acompañante (solo seniors) ===");
 
-        // Solo enseño los jugadores senior, da la casualidad de que solo tengo seniors, no es el mismo que el de arriba porque es solo
-        // seniors
         int contador = 0;
         for (Jugador jugador : Jugador.listaJugadores) {
             if (jugador.getCategoria() == Equipos.SENIOR) {
@@ -234,31 +291,33 @@ public class AppMantenimiento {
         System.out.print("Parentesco: ");
         String parentesco = teclado.nextLine();
 
-        // Creamos el acompañante y lo añadimos a la lista
         Acompanyante acompanyante = new Acompanyante(nombre, edad, jugadorSeleccionado, parentesco);
         Acompanyante.listaAcompanyantes.add(acompanyante);
 
         System.out.println("Acompañante añadido correctamente a " + jugadorSeleccionado.getNombre());
 
-//        for (Acompanyante acompanyante : Acompanyante.listaAcompanyantes) {
-//            System.out.println(acompanyante);
-//        }
     }
 
+    /**
+     * Muestra las categorias, y tu al seleccionar una te enseña el listado de juagdores que hay en ella
+     */
     public static void consultarEquipos(){
         for (int i = 0; i < Equipos.values().length; i++) {
             System.out.println(Equipos.values()[i]);
         }
 
+
+        System.out.println();
         System.out.println("Selecciona una opcion");
         Equipos opcionEquipo = Equipos.valueOf(teclado.next().toUpperCase());
+        System.out.println();
 
         for (Jugador jugador: Jugador.listaJugadores) {
             if (jugador.getCategoria().equals(opcionEquipo)){
                 System.out.println(jugador);
             }
         }
-
-
+        System.out.println();
+        mantenimientoJugadores();
     }
 }

@@ -2,12 +2,22 @@ package MonnegreFC;
 
 import java.util.ArrayList;
 
+
 public class Jugador extends MonnegreFC implements AccionesDeportivas, FuncionesIntegrantes {
   public static ArrayList<Jugador> listaJugadores = new ArrayList<>();
     private Equipos categoria;
     private int dorsal;
     private Posiciones Posicion;
 
+    /**
+     * Crea un jugador
+     *
+     * @param nombre nombre del jugador
+     * @param edad edad del jugador
+     * @param categoria categoria del jugador
+     * @param dorsal numero de dorsal
+     * @param posicion posicion del jugador
+     */
     public Jugador(String nombre, int edad, Equipos categoria, int dorsal, Posiciones posicion) {
         super(nombre, edad);
         this.categoria = categoria;
@@ -27,6 +37,11 @@ public class Jugador extends MonnegreFC implements AccionesDeportivas, Funciones
         return dorsal;
     }
 
+    /**
+     * Aqui es donde validamos el dorsal de los jugadores
+     *
+     * @param dorsal nuevo dorsal
+     */
     public void setDorsal(int dorsal) {
         compararDorsal(dorsal);
     }
@@ -39,15 +54,32 @@ public class Jugador extends MonnegreFC implements AccionesDeportivas, Funciones
         Posicion = posicion;
     }
 
+    /**
+     * Simula el calentamiento
+     */
     public void calentar(){
         System.out.println("El jugador esta calentando");
     }
+
+    /**
+     * Simula el descanso
+     */
     public void descansar(){
         System.out.println("El jugador esta descansando");
     }
+
+    /**
+     * Simula que el jugador marca un gol.
+     */
     public void marcarGol(){
         System.out.println("El jugador ha metido gol");
     }
+
+    /**
+     * Valida que el dorsal no este repetido en la misma categoria
+     *
+     * @param dorsal dorsal
+     */
     public void compararDorsal(int dorsal){
         for (Jugador jugador: listaJugadores) {
             if (jugador.getDorsal() == dorsal && jugador.getCategoria().equals(categoria)){
@@ -83,6 +115,11 @@ public class Jugador extends MonnegreFC implements AccionesDeportivas, Funciones
         System.out.println("El jugador esta jugando partidos");
     }
 
+    /**
+     * El toString pa verlo todo bonito
+     *
+     * @return informacion del jugador
+     */
     @Override
     public String toString() {
         return  "Nombre: " + getNombre() +

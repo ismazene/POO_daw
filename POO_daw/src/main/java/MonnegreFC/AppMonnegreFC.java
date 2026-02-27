@@ -1,7 +1,12 @@
 package MonnegreFC;
 
+
 public class AppMonnegreFC {
+    /**
+     * AppMonegre
+     */
     static void main() {
+
         Jugador Ismael = new Jugador("Ismael", 20, Equipos.SENIOR, 11, Posiciones.DELANTERO);
         Jugador Izan = new Jugador("Izan", 20, Equipos.SENIOR, 8, Posiciones.CENTROCAMPISTA);
         Jugador Jose = new Jugador("Jose", 23, Equipos.SENIOR, 15, Posiciones.DEFENSA);
@@ -22,30 +27,30 @@ public class AppMonnegreFC {
         Acompanyante Patri = new Acompanyante("Patri", 27, Izan, "Madre");
         Acompanyante Vicky = new Acompanyante("Vicky", 33, Manuel, "Tia");
 
-        Ismael.concentrarse();
-        Ismael.entrenar();
-        Enrique.darMasaje(Ismael);
-        Ismael.viajar("Madrid");
-        Juan.planificarEntrenamiento();
-        Ismael.descansar();
-        Ismael.calentar();
-        Ismael.jugarPartidos("Madrid");
-
-        /// Animar
-        Valentin.animarEquipo();
-        Alex.animarEquipo();
-        Patri.animarEquipo();
-        Vicky.animarEquipo();
-
-        Juan.hacerCambios();
-        Izan.marcarGol();
-        Manuel.celebrarGol();
-        Enrique.darMasaje(Izan);
-        Enrique.darMasaje(Manuel);
-        Enrique.darMasaje(Jose);
-
-        Juan.viajar("Mutxamel");
-        Manuel.descansar();
+//        Ismael.concentrarse();
+//        Ismael.entrenar();
+//        Enrique.darMasaje(Ismael);
+//        Ismael.viajar("Madrid");
+//        Juan.planificarEntrenamiento();
+//        Ismael.descansar();
+//        Ismael.calentar();
+//        Ismael.jugarPartidos("Madrid");
+//
+//        /// Animar
+//        Valentin.animarEquipo();
+//        Alex.animarEquipo();
+//        Patri.animarEquipo();
+//        Vicky.animarEquipo();
+//
+//        Juan.hacerCambios();
+//        Izan.marcarGol();
+//        Manuel.celebrarGol();
+//        Enrique.darMasaje(Izan);
+//        Enrique.darMasaje(Manuel);
+//        Enrique.darMasaje(Jose);
+//
+//        Juan.viajar("Mutxamel");
+//        Manuel.descansar();
 
 
     }

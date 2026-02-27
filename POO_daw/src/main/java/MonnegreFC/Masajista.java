@@ -4,6 +4,14 @@ public class Masajista extends MonnegreFC implements FuncionesIntegrantes{
     private String titulacion;
     private int anosExperiencia;
 
+    /**
+     * Crea un masajista con su titulacion y experiencia.
+     *
+     * @param nombre nombre del masajista
+     * @param edad edad del masajista
+     * @param titulacion titulacion profesional
+     * @param anosExperiencia años de experiencia
+     */
     public Masajista(String nombre, int edad, String titulacion, int anosExperiencia) {
         super(nombre, edad);
         this.titulacion = titulacion;
