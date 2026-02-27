@@ -26,3 +26,5 @@ MonnegreFC es una aplicacion en Java para gestionar integrantes del MonnegreFC.
 ## Validaciones
 - Control de dorsal repetido por categoria.
 - Validacion del formato de formacion del entrenador.
+
+————————————————————————————————————————————————
