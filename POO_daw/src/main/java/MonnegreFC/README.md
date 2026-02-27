@@ -1,7 +1,4 @@
 # Documentacion MonnegreFC
-
-Este archivo se ha creado para incluir documentacion del proyecto.
-
 ————————————————————————————————————————————————
 
 ## Resumen
