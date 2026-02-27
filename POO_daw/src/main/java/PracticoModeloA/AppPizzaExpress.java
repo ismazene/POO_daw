@@ -23,12 +23,8 @@ public class AppPizzaExpress {
             System.out.print("Elige pizza (ej: BBQ): ");
             String pizzaElegida = scanner.nextLine();
 
-            try {
                 pedido.agregarPizzaPorNombre(pizzaElegida);
-                System.out.println("Pizza anadida.");
-            } catch (IllegalArgumentException e) {
-                System.out.println("Pizza invalida. No esta en la carta.");
-            }
+                System.out.println("Pizza añadida.");
 
             System.out.printf("Precio acumulado: %.2f EUR%n", pedido.calcularTotalSinDescuento());
             System.out.print("Quieres anadir otra pizza? (S/N): ");
