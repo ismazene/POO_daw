@@ -199,12 +199,10 @@ public class AppMantenimiento {
                 String nuevaPosicion = teclado.next().toUpperCase();
                 jugadorSeleccionado.setPosicion(Posiciones.valueOf(nuevaPosicion));
                 System.out.println();
-                mantenimientoJugadores();
-
-            default:
+                mantenimientoJugadores();default:
                 System.out.println("Tienes que poner una opcion valida");
                 System.out.println();
-                mantenimientoJugadoresSeleccionarJugador();
+
         }
 
         System.out.println();
