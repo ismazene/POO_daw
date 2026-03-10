@@ -13,6 +13,8 @@ public class InformeApp {
         gestor.añadirInforme(new Informe(4,"ADMINISTRATIVO"));
         gestor.añadirInforme(new Informe(5,"EMPRESARIAL"));
 
+        gestor.contarTiposTareas();
+
         System.out.println("Mostrando informes:");
         gestor.mostrarYDespachar();
 
