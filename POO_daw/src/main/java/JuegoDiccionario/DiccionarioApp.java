@@ -1,8 +1,6 @@
 package JuegoDiccionario;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class DiccionarioApp {
     static Scanner teclado = new Scanner(System.in);
@@ -10,8 +8,45 @@ public class DiccionarioApp {
 
     static void main() {
         diccionario = Diccionario.crearDiccionario();
-        nuevoPar();
-        traduce();
+
+        System.out.println("=== Bienvenido al juego del diccionario ===");
+        System.out.println("[1] - Nuevo par");
+        System.out.println("[2] - Traducir palabra");
+        System.out.println("[3] - Palabra Aleatoria");
+        System.out.println("[4] - Primera Letra de la Traduccion");
+        System.out.println("[5] - Comenzar Juego");
+        System.out.println("[X] - Salir");
+        String opcion = teclado.nextLine();
+
+        switch (opcion) {
+
+            case "1":
+                nuevoPar();
+                break;
+
+            case "2":
+                traduce();
+                break;
+
+            case "3":
+                palabraAleatoria();
+                break;
+
+            case "4":
+                pimeraLetraTraduccion();
+                break;
+
+            case "5":
+                comenzarJuego();
+                break;
+
+            case "X":
+                System.out.println("Saliendo del programa...");
+                return;
+
+            default:
+                System.out.println("Opción no válida.");
+        }
 
     }
 
@@ -22,17 +57,11 @@ public class DiccionarioApp {
         if (diccionario.containsKey(nuevoPar[0])){
             System.out.println("Lo siento pero este par ya existe");
         }else {
-            diccionario.put(nuevoPar[0],(nuevoPar[1]));
+            diccionario.put(nuevoPar[0], nuevoPar[1]);
 
-            for (Map.Entry<String,String> mapita : diccionario.entrySet()){
-                System.out.println("Palabra añadida con exito");
-                System.out.println(mapita.getKey() + " --> " + mapita.getValue());
-
-            }
+            System.out.println("Palabra añadida con éxito");
+            System.out.println(nuevoPar[0] + " --> " + nuevoPar[1]);
         }
-
-
-
     }
     public static void traduce(){
         System.out.println("¿Qué palabra quieres traducir?");
@@ -46,8 +75,33 @@ public class DiccionarioApp {
 
         }
     }
-    public static void palabraAleatoria(){}
-    public static void pimeraLetraTraduccion(){}
+    public static void palabraAleatoria() {
 
+        Random random = new Random();
+        ArrayList<String> palabrasCastellano = new ArrayList<String>(diccionario.keySet());
+
+        int indice = random.nextInt(palabrasCastellano.size());
+        String palabra = palabrasCastellano.get(indice);
+        System.out.println("La palabra aleatoria es: " + palabra);
+
+    }
+    public static void pimeraLetraTraduccion(){
+        System.out.println("Dame una palabra en español");
+        String palabra = teclado.next();
+
+        if (!diccionario.containsKey(palabra)){
+            System.out.println("la palabra: " + palabra + " no existe en la lista");
+        } else {
+            String traduccion = diccionario.get(palabra).toUpperCase();
+            char primeraLetra = traduccion.charAt(0);
+            System.out.println("La primera letra de la traduccion es: " + primeraLetra + " ...");
+
+        }
+
+    }
+    public static void comenzarJuego(){
+        System.out.println(diccionario.keySet());
+
+    }
 
 }
