@@ -13,6 +13,7 @@ public class Mapas {
         Iterator<Map.Entry<String,Integer>> itmapita = goleadores.entrySet().iterator();
 
         while (itmapita.hasNext()){
+            /// Es importante hacer el next para empezar a recorrer el array
             Map.Entry<String,Integer> goleadorGol = itmapita.next();
             System.out.println(goleadorGol.getKey() + " ha marcado " + goleadorGol.getValue() + " goles");
         }
