@@ -99,9 +99,50 @@ public class DiccionarioApp {
         }
 
     }
-    public static void comenzarJuego(){
-        System.out.println(diccionario.keySet());
+    public static void comenzarJuego() {
+        Random random = new Random();
+        ArrayList<String> palabras = new ArrayList<>(diccionario.keySet());
 
+        int aciertos = 0;
+        int errores = 0;
+
+        System.out.println("=== COMIENZA EL JUEGO ===");
+        System.out.println("Escribe 'fin' para terminar el juego.");
+
+        while (true) {
+            int indice = random.nextInt(palabras.size());
+            String palabra = palabras.get(indice);
+
+            String traduccion = diccionario.get(palabra);
+            char primeraLetra = traduccion.toUpperCase().charAt(0);
+            System.out.println(palabra + ": " + primeraLetra + " ...");
+
+            System.out.print("Indique la respuesta: ");
+            String respuesta = teclado.next();
+
+            if (respuesta.equalsIgnoreCase("fin")) {
+                break;
+            }
+
+            if (respuesta.equalsIgnoreCase(traduccion)) {
+                System.out.println("¡CORRECTO!");
+                aciertos++;
+            } else {
+                System.out.println("¡NO! La respuesta correcta es " + traduccion + "\n");
+                errores++;
+            }
+        }
+
+        int total = aciertos + errores;
+        double porcentaje = 0;
+        if (total > 0) {
+            porcentaje = aciertos * 100.0 / total;
+        }
+
+        System.out.println("FIN DEL PROGRAMA");
+        System.out.println("Total preguntas: " + total);
+        System.out.println("Total aciertos: " + aciertos);
+        System.out.println("Total errores: " + errores);
+        System.out.println("Aciertos: " + (int) porcentaje + "%");
     }
-
 }
