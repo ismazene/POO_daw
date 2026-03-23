@@ -4,7 +4,7 @@ import java.util.*;
 
 public class DiccionarioApp {
     static Scanner teclado = new Scanner(System.in);
-    static HashMap<String,String> diccionario = new HashMap<>();
+    static HashMap<String, String> diccionario = new HashMap<>();
 
     static void main() {
         diccionario = Diccionario.crearDiccionario();
@@ -19,51 +19,45 @@ public class DiccionarioApp {
         String opcion = teclado.nextLine();
 
         switch (opcion) {
-
             case "1":
                 nuevoPar();
                 break;
-
             case "2":
                 traduce();
                 break;
-
             case "3":
-                palabraAleatoria();
+                System.out.println("Palabra aleatoria: " + palabraAleatoria(diccionario));
                 break;
-
             case "4":
-                pimeraLetraTraduccion();
+                primeraLetraTraduccion();
                 break;
-
             case "5":
                 comenzarJuego();
                 break;
-
             case "X":
                 System.out.println("Saliendo del programa...");
                 return;
-
             default:
                 System.out.println("Opción no válida.");
         }
-
     }
 
-    public static void nuevoPar(){
+    // Método para añadir un nuevo par al diccionario
+    public static void nuevoPar() {
         System.out.println("Dame una palabra en castellano y otra en ingles (castellano - ingles) ");
         String nuevoPar[] = teclado.nextLine().split("-");
 
-        if (diccionario.containsKey(nuevoPar[0])){
+        if (diccionario.containsKey(nuevoPar[0])) {
             System.out.println("Lo siento pero este par ya existe");
-        }else {
+        } else {
             diccionario.put(nuevoPar[0], nuevoPar[1]);
-
             System.out.println("Palabra añadida con éxito");
             System.out.println(nuevoPar[0] + " --> " + nuevoPar[1]);
         }
     }
-    public static void traduce(){
+
+    // Método para traducir
+    public static void traduce() {
         System.out.println("¿Qué palabra quieres traducir?");
         String palabra = teclado.next();
 
@@ -72,33 +66,31 @@ public class DiccionarioApp {
             System.out.println("La traducción es: " + traduccion);
         } else {
             System.out.println("Esa palabra no está en el diccionario");
-
         }
     }
-    public static void palabraAleatoria() {
 
+    // Método que devuelve una palabra aleatoria (para test)
+    public static String palabraAleatoria(HashMap<String, String> diccionario) {
+        ArrayList<String> palabras = new ArrayList<>(diccionario.keySet());
         Random random = new Random();
-        ArrayList<String> palabrasCastellano = new ArrayList<String>(diccionario.keySet());
-
-        int indice = random.nextInt(palabrasCastellano.size());
-        String palabra = palabrasCastellano.get(indice);
-        System.out.println("La palabra aleatoria es: " + palabra);
-
+        return palabras.get(random.nextInt(palabras.size()));
     }
-    public static void pimeraLetraTraduccion(){
+
+    // Método que muestra la primera letra de la traducción
+    public static void primeraLetraTraduccion() {
         System.out.println("Dame una palabra en español");
         String palabra = teclado.next();
 
-        if (!diccionario.containsKey(palabra)){
-            System.out.println("la palabra: " + palabra + " no existe en la lista");
+        if (!diccionario.containsKey(palabra)) {
+            System.out.println("La palabra: " + palabra + " no existe en la lista");
         } else {
             String traduccion = diccionario.get(palabra).toUpperCase();
             char primeraLetra = traduccion.charAt(0);
-            System.out.println("La primera letra de la traduccion es: " + primeraLetra + " ...");
-
+            System.out.println("La primera letra de la traducción es: " + primeraLetra + " ...");
         }
-
     }
+
+    // Método para iniciar el juego de traducción
     public static void comenzarJuego() {
         Random random = new Random();
         ArrayList<String> palabras = new ArrayList<>(diccionario.keySet());
