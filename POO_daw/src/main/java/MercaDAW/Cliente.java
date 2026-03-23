@@ -1,16 +1,20 @@
 package MercaDAW;
 
+import java.util.HashMap;
+
 public class Cliente {
     private String usuario;
     private String contrasenya;
     private String direccion;
     private Pedido pedido;
+    private Boolean promociones;
 
     public Cliente(String usuario, String contrasenya, String direccion, Pedido pedido) {
         this.usuario = usuario;
         this.contrasenya = contrasenya;
         this.direccion = direccion;
         this.pedido = pedido;
+        this.promociones = false;
     }
 
     public String getUsuario() {
@@ -45,9 +49,14 @@ public class Cliente {
         this.pedido = pedido;
     }
 
-    public void crearPedido(){}
-    public void insertarProducto(){}
-    public double importePedido(){
+    public void crearPedido() {
+        pedido = new Pedido(new HashMap<>(), 0);
+    }
+
+    public void insertarProducto() {
+    }
+
+    public double importePedido() {
         return 0;
     }
 
@@ -57,6 +66,7 @@ public class Cliente {
                 "usuario='" + usuario + '\'' +
                 ", contrasenya='" + contrasenya + '\'' +
                 ", direccion='" + direccion + '\'' +
+                ", promociones=" + promociones +
                 ", pedido=" + pedido +
                 '}';
     }
