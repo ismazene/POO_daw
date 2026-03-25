@@ -1,7 +1,8 @@
 package MercaDAW;
 
-import java.util.HashMap;
-
+/**
+ * Representa a un cliente de la tienda online.
+ */
 public class Cliente {
     private String usuario;
     private String contrasenya;
@@ -9,6 +10,14 @@ public class Cliente {
     private Pedido pedido;
     private Boolean promociones;
 
+    /**
+     * Crea un cliente con sus datos.
+     *
+     * @param usuario nombre de usuario
+     * @param contrasenya contrasenya del cliente
+     * @param direccion direccion de envío
+     * @param pedido pedido actual del cliente
+     */
     public Cliente(String usuario, String contrasenya, String direccion, Pedido pedido) {
         this.usuario = usuario;
         this.contrasenya = contrasenya;
@@ -49,13 +58,26 @@ public class Cliente {
         this.pedido = pedido;
     }
 
+    /**
+     * Inicializa un pedido vacio.
+     */
     public void crearPedido() {
-        pedido = new Pedido(new HashMap<>(), 0);
+        pedido = new Pedido();
+        promociones = false;
     }
 
+    /**
+     * Devuelve el importe actual del pedido del cliente.
+     *
+     * @return importe total
+     */
     public double importePedido() {
-        return 0;
+        if (pedido == null) {
+            return 0;
+        }
+        return pedido.importePedido();
     }
+
     public Boolean getPromociones() {
         return promociones;
     }
