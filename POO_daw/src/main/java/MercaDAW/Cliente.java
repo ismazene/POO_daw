@@ -53,11 +53,15 @@ public class Cliente {
         pedido = new Pedido(new HashMap<>(), 0);
     }
 
-    public void insertarProducto() {
-    }
-
     public double importePedido() {
         return 0;
+    }
+    public Boolean getPromociones() {
+        return promociones;
+    }
+
+    public void setPromociones(Boolean promociones) {
+        this.promociones = promociones;
     }
 
     @Override
