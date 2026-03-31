@@ -1,70 +1,64 @@
 @startuml
-  package ECommerce {
+package ECommerce {
 
-  class AppEcommerce {
-    ~ {static} void main() throws InterruptedException
-  }
+class AppEcommerce {
+  + {static} void main(String[] args) throws InterruptedException
+}
 
-  abstract class MetodoPago {
-    ~ {abstract} void procesarPago(double importe)
-  }
+abstract class MetodoPago {
+  - String nombre
+  # MetodoPago(String nombre)
+  + String getNombre()
+  + {abstract} boolean validarDatos(Scanner teclado) throws InterruptedException
+  + boolean puedePagar(double importe)
+  + {abstract} void procesarPago(double importe)
+}
 
-  class Bizum {
-    - {static} Scanner teclado
-    - String telefono
-    - int pin
-    - Random random
-    ~ {static} {readOnly} int NUMERO_MAX
+class Bizum {
+  - {static} {readOnly} int LONGITUD_TELEFONO
+  - {static} {readOnly} int PIN_MIN
+  - {static} {readOnly} int PIN_MAX
+  - Random random
+  - String telefono
+  - int pin
+  + Bizum(String telefono, int pin)
+  + boolean validarDatos(Scanner teclado) throws InterruptedException
+  + void procesarPago(double importe)
+}
 
-    + Bizum(String telefono, int pin)
-    + String getTelefono()
-    + void setTelefono(String telefono)
-    + int getPin()
-    + void setPin(int pin)
-    + void validarPago() throws InterruptedException
-    ~ void procesarPago(double importe)
-  }
+class PayPal {
+  - {static} {readOnly} String CORREO_FORMAT
+  - String cuenta
+  - double saldo
+  + PayPal(double saldo, String cuenta)
+  + double getSaldo()
+  + boolean validarDatos(Scanner teclado) throws InterruptedException
+  + boolean puedePagar(double importe)
+  + void procesarPago(double importe)
+}
 
-  class PayPal {
-    ~ {static} Scanner teclado
-    - {static} {readOnly} String CORREO_FORMAT
-    - String cuenta
-    - double saldo
+class TarjetaCredito {
+  - {static} {readOnly} int LONGITUD_TARJETA
+  - {static} {readOnly} String[] TIPOS_TARJETA
+  - String numeroTarjeta
+  - String tipoSeleccionado
+  + TarjetaCredito(String numeroTarjeta)
+  + boolean validarDatos(Scanner teclado) throws InterruptedException
+  + void procesarPago(double importe)
+}
 
-    + PayPal(double saldo, String cuenta)
-    + String getCuenta()
-    + void setCuenta(String cuenta)
-    + double getSaldo()
-    + void setSaldo(double saldo)
-    + void validarPago() throws InterruptedException
-    ~ void procesarPago(double importe)
-  }
+class Tienda {
+  + {static} void iniciarPago() throws InterruptedException
+  - {static} void realizarPago(MetodoPago metodoPago, double importe)
+  - {static} MetodoPago crearMetodoPago(String metodoPago)
+  - {static} double pedirImporte(Scanner teclado)
+}
 
-  class TarjetaCredito {
-    ~ {static} Scanner teclado
-    ~ {static} {readOnly} int NUMERO_MAX
-    - String nro_tarjeta
-    - String tipoSeleccionado
-    ~ String[] tipoTarjetas
+MetodoPago <|-- Bizum
+MetodoPago <|-- PayPal
+MetodoPago <|-- TarjetaCredito
 
-    + TarjetaCredito(String nro_tarjeta)
-    + void validarPago() throws InterruptedException
-    + boolean validarTipo()
-    ~ void procesarPago(double importe)
-  }
-
-  class Tienda {
-    + {static} void iniciarPago() throws InterruptedException
-    - {static} void realizarPago() throws InterruptedException
-  }
-
-  MetodoPago <|-- Bizum
-  MetodoPago <|-- PayPal
-  MetodoPago <|-- TarjetaCredito
-
-  AppEcommerce ..> Tienda : usa
-  Tienda ..> Bizum : crea/usa
-  Tienda ..> PayPal : crea/usa
-  Tienda ..> TarjetaCredito : crea/usa
-  }
-  @enduml
+AppEcommerce ..> Tienda : usa
+Tienda ..> MetodoPago : crea/valida
+}
+@enduml

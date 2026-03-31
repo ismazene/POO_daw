@@ -1,15 +1,17 @@
 package ECommerce;
 
 /**
- * Clase principal
- * Inicia la tienda
+ * Punto de entrada de la aplicacion.
  */
 public class AppEcommerce {
 
     /**
-     * Metodo principal
+     * Inicia la simulacion del pago en la tienda.
+     *
+     * @param args argumentos de linea de comandos
+     * @throws InterruptedException si se interrumpe una pausa de validacion
      */
-    static void main() throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException {
         Tienda.iniciarPago();
     }
 }

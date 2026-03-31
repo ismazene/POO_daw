@@ -4,78 +4,55 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 /**
- * Clase de pago con tarjeta de crédito.
+ * Metodo de pago con tarjeta de credito.
  */
 public class TarjetaCredito extends MetodoPago {
 
-    /** Scanner */
-    static Scanner teclado = new Scanner(System.in);
-    final static int NUMERO_MAX = 16;
-    private String nro_tarjeta;
+    private static final int LONGITUD_TARJETA = 16;
+    private static final String[] TIPOS_TARJETA = {"VISA", "MAESTRO", "MASTERCARD"};
+
+    private String numeroTarjeta;
     private String tipoSeleccionado;
-    String[] tipoTarjetas = {"VISA", "MAESTRO", "MASTERCARD"};
 
     /**
-     * Constructor
+     * Crea un metodo de pago con tarjeta.
      *
-     * @param nro_tarjeta numero de la tarjeta
+     * @param numeroTarjeta numero de la tarjeta
      */
-    public TarjetaCredito(String nro_tarjeta) {
-        this.nro_tarjeta = nro_tarjeta;
+    public TarjetaCredito(String numeroTarjeta) {
+        super("Tarjeta");
+        this.numeroTarjeta = numeroTarjeta;
     }
 
-    /**
-     * Valida el pago de la tarjeta de crédito
-     */
-    public void validarPago() throws InterruptedException {
-        System.out.println("Dame el numero de la tarjeta, recuerda que solo se pueden 16 numeros:");
-        String numero = teclado.nextLine();
+    @Override
+    public boolean validarDatos(Scanner teclado) throws InterruptedException {
+        System.out.println("Dame el numero de la tarjeta, recuerda que solo se permiten 16 numeros:");
+        String numero = teclado.nextLine().trim();
 
-        if (numero.length() != NUMERO_MAX || !numero.matches("\\d+")) {
+        if (!numero.matches("{" + LONGITUD_TARJETA + "}")) {
             System.out.println("Numero de tarjeta no valido");
-            System.exit(0);
+            return false;
         }
 
-        this.nro_tarjeta = numero;
+        System.out.println("Selecciona el tipo de tarjeta [VISA, MASTERCARD, MAESTRO]:");
+        String tipoTarjeta = teclado.nextLine().trim().toUpperCase();
 
-        if (!validarTipo()) {
+        if (!Arrays.asList(TIPOS_TARJETA).contains(tipoTarjeta)) {
             System.out.println("Tipo de tarjeta no valido");
-            System.exit(0);
+            return false;
         }
+
+        numeroTarjeta = numero;
+        tipoSeleccionado = tipoTarjeta;
 
         System.out.println("Validando tarjeta...");
-        Thread.sleep(5000);
-
-        System.out.println("Introduce el importe a pagar:");
-        double importe = Double.parseDouble(teclado.nextLine());
-
-        procesarPago(importe);
+        Thread.sleep(1000);
+        return true;
     }
 
-    /**
-     * Valida el tipo de tarjeta
-     *
-     * @return true si el tipo de tarjeta es válido, false si no lo es
-     */
-    public boolean validarTipo() {
-        System.out.println("Selecciona el tipo de tarjeta [VISA, MASTERCARD, MAESTRO]: ");
-        String tipoTarjeta = teclado.nextLine().toUpperCase();
-
-        if (Arrays.asList(tipoTarjetas).contains(tipoTarjeta)) {
-            tipoSeleccionado = tipoTarjeta;
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Procesa el pago
-     *
-     * @param importe Importe a pagar
-     */
     @Override
-    void procesarPago(double importe) {
-        System.out.println("Procesando pago de " + importe + " € con tarjeta " + tipoSeleccionado);
+    public void procesarPago(double importe) {
+        System.out.println("Procesando pago de " + importe + " EUR con tarjeta " + tipoSeleccionado);
         System.out.println("Pago aceptado. Muchas gracias.");
     }
 }

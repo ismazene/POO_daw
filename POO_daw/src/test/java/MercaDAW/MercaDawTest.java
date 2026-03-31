@@ -1,4 +1,4 @@
-﻿package MercaDAW;
+package MercaDAW;
 
 import org.junit.jupiter.api.Test;
 

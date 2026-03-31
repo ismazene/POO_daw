@@ -3,45 +3,74 @@ package ECommerce;
 import java.util.Scanner;
 
 /**
- * Permite al usuario elegir un metodo de pago y hacer el pago
+ * Orquesta el flujo de pago de la tienda.
  */
 public class Tienda {
 
     /**
-     * Iniciar el pago en la tienda
+     * Inicia el flujo completo del pago.
+     *
+     * @throws InterruptedException si se interrumpe una pausa de validacion
      */
     public static void iniciarPago() throws InterruptedException {
-        realizarPago();
+        Scanner teclado = new Scanner(System.in);
+
+        System.out.println("Que metodo de pago quieres usar? [Bizum, PayPal, Tarjeta]");
+        MetodoPago metodoPago = crearMetodoPago(teclado.nextLine());
+
+        if (metodoPago == null) {
+            System.out.println("El metodo de pago no existe");
+            return;
+        }
+
+        if (!metodoPago.validarDatos(teclado)) {
+            return;
+        }
+
+        double importe = pedirImporte(teclado);
+        if (importe <= 0) {
+            System.out.println("El importe no es valido");
+            return;
+        }
+
+        if (!metodoPago.puedePagar(importe)) {
+            return;
+        }
+
+        realizarPago(metodoPago, importe);
     }
 
     /**
-     * Realizar el pago dependiendo de lo que diga el usuario
+     * Procesa el pago una vez que todos los datos ya son validos.
+     *
+     * @param metodoPago metodo de pago validado
+     * @param importe importe a pagar
      */
-    private static void realizarPago() throws InterruptedException {
-        Scanner teclado = new Scanner(System.in);
+    private static void realizarPago(MetodoPago metodoPago, double importe) {
+        metodoPago.procesarPago(importe);
+    }
 
-        System.out.println("¿Qué método de pago quieres usar? [Bizum, PayPal, Tarjeta]");
-        String metodoPago = teclado.nextLine().toLowerCase();
-
-        switch (metodoPago) {
+    private static MetodoPago crearMetodoPago(String metodoPago) {
+        switch (metodoPago.trim().toLowerCase()) {
             case "bizum":
-
-                Bizum prueba3 = new Bizum("123456789", 123456);
-                prueba3.validarPago();
-                break;
-
+                return new Bizum("", 0);
             case "paypal":
-                PayPal prueba2 = new PayPal(23, "La mia");
-                prueba2.validarPago();
-                break;
-
+                return new PayPal(23, "");
             case "tarjeta":
-                TarjetaCredito prueba = new TarjetaCredito("1234567890123456");
-                prueba.validarPago();
-                break;
-
+                return new TarjetaCredito("");
             default:
-                System.out.println("El metodo de pago no existe");
+                return null;
+        }
+    }
+
+    private static double pedirImporte(Scanner teclado) {
+        System.out.println("Introduce el importe a pagar:");
+        String textoImporte = teclado.nextLine().trim();
+
+        try {
+            return Double.parseDouble(textoImporte);
+        } catch (NumberFormatException e) {
+            return -1;
         }
     }
 }

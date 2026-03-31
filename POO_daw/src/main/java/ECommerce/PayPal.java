@@ -3,33 +3,24 @@ package ECommerce;
 import java.util.Scanner;
 
 /**
- * Clase pago mediante PayPal.
- * Validar el correo electrónico, comprobar saldo
+ * Metodo de pago mediante PayPal.
  */
 public class PayPal extends MetodoPago {
 
-    static Scanner teclado = new Scanner(System.in);
+    private static final String CORREO_FORMAT = "^[A-Za-z0-9+_.-]+@gmailcom$";
 
-    private static final String CORREO_FORMAT = "^[A-Za-z0-9+_.-]+@gmail.com$";
     private String cuenta;
-    private double saldo = 23;
+    private double saldo;
 
     /**
-     * Constructor
+     * Crea un metodo de pago PayPal.
      *
-     * @param saldo saldo
-     * @param cuenta correo
+     * @param saldo saldo disponible
+     * @param cuenta correo asociado a la cuenta
      */
     public PayPal(double saldo, String cuenta) {
+        super("PayPal");
         this.saldo = saldo;
-        this.cuenta = cuenta;
-    }
-
-    public String getCuenta() {
-        return cuenta;
-    }
-
-    public void setCuenta(String cuenta) {
         this.cuenta = cuenta;
     }
 
@@ -37,48 +28,36 @@ public class PayPal extends MetodoPago {
         return saldo;
     }
 
-    public void setSaldo(double saldo) {
-        this.saldo = saldo;
-    }
-
-    /**
-     * Validar el pago
-     *
-     * 1. Pedir el correo del usuario y comprobar su formato
-     * 2. Si es valido pide el importe
-     * 3. Comprobar si hay saldo suficiente
-     * 4. Si todo esta bien procesamos el pago
-     *
-     */
-    public void validarPago() throws InterruptedException {
-        System.out.println("Dame tu correo:");
-        String correo = teclado.nextLine();
-
-        if (correo.matches(CORREO_FORMAT)) {
-            System.out.println("Validando correo...");
-            Thread.sleep(5000);
-            System.out.println("Correo válido");
-            this.cuenta = correo;
-            System.out.println("Introduce el importe a pagar: ");
-            double importe = teclado.nextDouble();
-
-            if (importe < getSaldo()) {
-                procesarPago(importe);
-            } else {
-                System.out.println("Has pinchado, no tienes fondos suficientes, solo te quedan: " + getSaldo() + " €");
-            }
-        } else {
-            System.out.println("Lo siento, el correo es incorrecto");
-        }
-    }
-
-    /**
-     * Procesar el pago
-     *
-     * @param importe Importe a pagar
-     */
     @Override
-    void procesarPago(double importe) {
-        System.out.println("Procesando pago de " + importe + "€ con " + "PayPal");
+    public boolean validarDatos(Scanner teclado) throws InterruptedException {
+        System.out.println("Dame tu correo:");
+        String correo = teclado.nextLine().trim();
+
+        if (!correo.matches(CORREO_FORMAT)) {
+            System.out.println("Lo siento, el correo es incorrecto");
+            return false;
+        }
+
+        System.out.println("Validando correo...");
+        Thread.sleep(1000);
+        System.out.println("Correo valido");
+        cuenta = correo;
+        return true;
+    }
+
+    @Override
+    public boolean puedePagar(double importe) {
+        if (importe > saldo) {
+            System.out.println("No tienes fondos suficientes. Saldo disponible: " + saldo + " EUR");
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void procesarPago(double importe) {
+        saldo -= importe;
+        System.out.println("Procesando pago de " + importe + " EUR con PayPal");
+        System.out.println("Pago aceptado. Saldo restante: " + saldo + " EUR");
     }
 }
