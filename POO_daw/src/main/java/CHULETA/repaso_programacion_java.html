@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Repaso Programación Java — Temas 1–7</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@400;600;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #14171f;
+    --card: #1a1e2a;
+    --border: #2a2f3e;
+    --accent: #7c6af7;
+    --accent2: #4ecdc4;
+    --accent3: #ff6b6b;
+    --accent4: #ffd93d;
+    --text: #e8eaf0;
+    --muted: #7a80a0;
+    --code-bg: #0a0c12;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.7;
+  }
+  /* HEADER */
+  header {
+    padding: 3rem 2rem 2rem;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: -60px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(124,106,247,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: 100px;
+    width: 250px; height: 250px;
+    background: radial-gradient(circle, rgba(78,205,196,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header-inner { max-width: 900px; margin: 0 auto; position: relative; }
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--accent2);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    color: #fff;
+  }
+  h1 span { color: var(--accent); }
+  .subtitle { color: var(--muted); font-size: 15px; max-width: 480px; }
+  .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid;
+  }
+  .badge-purple { color: var(--accent); border-color: rgba(124,106,247,0.4); background: rgba(124,106,247,0.08); }
+  .badge-teal   { color: var(--accent2); border-color: rgba(78,205,196,0.4); background: rgba(78,205,196,0.08); }
+  .badge-red    { color: var(--accent3); border-color: rgba(255,107,107,0.4); background: rgba(255,107,107,0.08); }
+  .badge-yellow { color: var(--accent4); border-color: rgba(255,217,61,0.4); background: rgba(255,217,61,0.08); }
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,15,20,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+  }
+  nav ul {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    gap: 0;
+    list-style: none;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  nav ul::-webkit-scrollbar { display: none; }
+  nav a {
+    display: block;
+    padding: 14px 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  nav a:hover { color: var(--text); border-color: var(--accent); }
+  /* MAIN */
+  main { max-width: 900px; margin: 0 auto; padding: 2rem; }
+  .section { margin-bottom: 4rem; scroll-margin-top: 80px; }
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 1.5rem;
+  }
+  .section-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    min-width: 36px;
+    padding-top: 4px;
+  }
+  .section-title-group {}
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .freq {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .freq span { color: var(--accent3); }
+  /* CARDS */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .card + .card { border-top-left-radius: 12px; }
+  h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent2);
+    margin-bottom: 12px;
+  }
+  p { color: var(--text); font-size: 14px; margin-bottom: 10px; }
+  p:last-child { margin-bottom: 0; }
+  p.muted { color: var(--muted); }
+  /* CODE */
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem;
+    overflow-x: auto;
+    margin: 12px 0;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: #c9d1d9;
+  }
+  .kw { color: #c792ea; }
+  .ty { color: #82aaff; }
+  .str { color: #c3e88d; }
+  .cm { color: #546e7a; font-style: italic; }
+  .nm { color: var(--accent4); }
+  code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    background: rgba(124,106,247,0.12);
+    color: var(--accent);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  /* ALERT */
+  .alert {
+    border-left: 3px solid var(--accent3);
+    background: rgba(255,107,107,0.06);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+  }
+  .alert p { color: #ff9a9a; font-size: 13px; margin: 0; }
+  .alert strong { color: var(--accent3); }
+  .tip-box {
+    border-left: 3px solid var(--accent4);
+    background: rgba(255,217,61,0.06);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+  }
+  .tip-box p { color: #ffe08a; font-size: 13px; margin: 0; }
+  /* TABLE */
+  .table-wrap { overflow-x: auto; margin: 12px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th {
+    background: rgba(124,106,247,0.1);
+    color: var(--accent);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(42,47,62,0.5);
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+  /* DIVIDER */
+  hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+  /* PILL */
+  .pill {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 99px;
+    margin-right: 6px;
+    margin-bottom: 4px;
+  }
+  .pill-purple { background: rgba(124,106,247,0.15); color: var(--accent); border: 1px solid rgba(124,106,247,0.3); }
+  .pill-teal   { background: rgba(78,205,196,0.12); color: var(--accent2); border: 1px solid rgba(78,205,196,0.25); }
+  .pill-red    { background: rgba(255,107,107,0.12); color: var(--accent3); border: 1px solid rgba(255,107,107,0.25); }
+  /* RESULT BOX */
+  .result {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    background: rgba(78,205,196,0.1);
+    color: var(--accent2);
+    border: 1px solid rgba(78,205,196,0.3);
+    border-radius: 6px;
+    padding: 6px 14px;
+    margin-top: 8px;
+  }
+  /* STACK DIAGRAM */
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 12px 0;
+    width: fit-content;
+  }
+  .stack-frame {
+    background: rgba(124,106,247,0.1);
+    border: 1px solid rgba(124,106,247,0.3);
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .stack-frame .prints { color: var(--accent4); font-size: 11px; }
+  .stack-arrow { color: var(--muted); font-size: 12px; padding-left: 16px; }
+  .stack-base {
+    background: rgba(255,107,107,0.08);
+    border-color: rgba(255,107,107,0.3);
+    color: var(--accent3);
+  }
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--muted);
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  @media print {
+    nav { display: none; }
+    .section { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="eyebrow">// Guía de repaso · Recuperación</div>
+    <h1>Programación <span>Java</span><br>Temas 1–7</h1>
+    <p class="subtitle">Basada en los patrones de los exámenes anteriores. Los temas con ★★★ han aparecido en todos los exámenes.</p>
+    <div class="badges">
+      <span class="badge badge-purple">★★★ Iterator / ArrayList</span>
+      <span class="badge badge-purple">★★★ Polimorfismo</span>
+      <span class="badge badge-purple">★★★ Encapsulación</span>
+      <span class="badge badge-red">★★★ Recursividad</span>
+      <span class="badge badge-red">★★★ Trazas de bucles</span>
+      <span class="badge badge-teal">★★ Excepciones</span>
+      <span class="badge badge-teal">★★ Interfaces</span>
+      <span class="badge badge-yellow">★★ Arrays 2D</span>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <ul>
+    <li><a href="#iterator">Iterator</a></li>
+    <li><a href="#polimorfismo">Polimorfismo</a></li>
+    <li><a href="#encapsulacion">Encapsulación</a></li>
+    <li><a href="#recursividad">Recursividad</a></li>
+    <li><a href="#trazas">Trazas</a></li>
+    <li><a href="#excepciones">Excepciones</a></li>
+    <li><a href="#interfaces">Interfaces</a></li>
+    <li><a href="#arrays2d">Arrays 2D</a></li>
+    <li><a href="#diagramas">Diagramas de flujo</a></li>
+    <li><a href="#lombok">Lombok</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <!-- ──────────────────────────────────────────── -->
+  <section class="section" id="iterator">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div class="section-title-group">
+        <h2>Iterator con ArrayList</h2>
+        <div class="freq">Aparece en: <span>★★★ todos los exámenes</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>¿Por qué usar Iterator para eliminar?</h3>
+      <p>Si intentas eliminar elementos de una lista mientras la recorres con <code>for-each</code>, Java lanza una <code>ConcurrentModificationException</code>. El <code>Iterator</code> tiene su propio método <code>remove()</code> que actualiza el cursor interno de forma segura.</p>
+      <div class="alert">
+        <p><strong>Trampa del examen:</strong> ¿por qué no se puede usar for-each? → Porque no expone un método <code>remove()</code> seguro. Si llamas a <code>lista.remove()</code> dentro del for-each, la lista se modifica mientras se itera → <code>ConcurrentModificationException</code>.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Patrón completo — eliminar elementos que cumplen condición</h3>
+<pre><span class="ty">ArrayList</span>&lt;<span class="ty">Integer</span>&gt; lista = <span class="kw">new</span> <span class="ty">ArrayList</span>&lt;&gt;(<span class="ty">Arrays</span>.asList(<span class="nm">2</span>, <span class="nm">4</span>, <span class="nm">6</span>, <span class="nm">8</span>, <span class="nm">10</span>));
+<span class="ty">Iterator</span>&lt;<span class="ty">Integer</span>&gt; it = lista.iterator();
+
+<span class="kw">while</span> (it.hasNext()) {
+    <span class="kw">int</span> num = it.next();
+    <span class="kw">if</span> (num &gt; <span class="nm">5</span>) {          <span class="cm">// condición que cambia en cada examen</span>
+        it.remove();        <span class="cm">// SIEMPRE it.remove(), nunca lista.remove()</span>
+    }
+}
+<span class="cm">// lista resultante: [2, 4]</span></pre>
+      <p class="muted">En el examen de abril la condición era <code>&gt; 5</code>, en mayo era <code>&lt; 8</code>. La estructura siempre es idéntica.</p>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────── -->
+  <section class="section" id="polimorfismo">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div class="section-title-group">
+        <h2>Polimorfismo</h2>
+        <div class="freq">Aparece en: <span>★★★ todos los exámenes</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Ligadura dinámica (late binding)</h3>
+      <p>La pregunta siempre tiene este patrón: referencia de tipo padre, objeto de tipo hijo. Java decide qué método ejecutar en <strong>tiempo de ejecución</strong>, según el tipo real del objeto (no el de la referencia).</p>
+<pre><span class="ty">Animal</span> a = <span class="kw">new</span> <span class="ty">Perro</span>();   <span class="cm">// referencia Animal, objeto Perro</span>
+a.hacerSonido();           <span class="cm">// imprime: "¡Guau!" → método de Perro</span></pre>
+      <p>Se ejecuta el de <code>Perro</code> aunque la referencia sea de tipo <code>Animal</code>. Esto es la <strong>ligadura dinámica</strong>.</p>
+    </div>
+
+    <div class="card">
+      <h3>Segunda parte — si el método NO está en la clase hija</h3>
+      <p>Si <code>hacerSonido()</code> no existe en <code>Perro</code>, Java sube por la jerarquía de herencia y ejecuta el de <code>Animal</code>: <em>"El animal está haciendo un sonido!"</em>.</p>
+      <p>Java siempre busca el método <strong>de abajo hacia arriba</strong> en la jerarquía.</p>
+      <div class="tip-box">
+        <p>En el examen de mayo fue con <code>Instrumento</code> / <code>Guitarra</code> y el método <code>tocar()</code>. La mecánica es exactamente la misma. Identifica el patrón.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Ejemplo completo del examen</h3>
+<pre><span class="kw">class</span> <span class="ty">Animal</span> {
+    <span class="kw">public void</span> hacerSonido() {
+        <span class="ty">System</span>.out.println(<span class="str">"El animal está haciendo un sonido!"</span>);
+    }
+}
+<span class="kw">class</span> <span class="ty">Perro</span> <span class="kw">extends</span> <span class="ty">Animal</span> {
+    <span class="kw">public void</span> hacerSonido() {
+        <span class="ty">System</span>.out.println(<span class="str">"¡Guau!"</span>);
+    }
+}
+
+<span class="ty">Animal</span> a = <span class="kw">new</span> <span class="ty">Perro</span>();
+a.hacerSonido();  <span class="cm">// → "¡Guau!"  (objeto es Perro, se ejecuta Perro)</span></pre>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────── -->
+  <section class="section" id="encapsulacion">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div class="section-title-group">
+        <h2>Encapsulación</h2>
+        <div class="freq">Aparece en: <span>★★★ todos los exámenes — con la misma clase Persona</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>El problema: atributo público sin control</h3>
+<pre><span class="kw">public class</span> <span class="ty">Persona</span> {
+    <span class="kw">public int</span> edad;   <span class="cm">// ← cualquiera puede poner p.edad = -5</span>
+}</pre>
+      <p>Al ser <code>public</code>, cualquier clase externa puede asignar un valor inválido sin ninguna validación. Esto rompe la integridad del objeto.</p>
+    </div>
+
+    <div class="card">
+      <h3>La solución: private + getter + setter con validación</h3>
+<pre><span class="kw">public class</span> <span class="ty">Persona</span> {
+    <span class="kw">private int</span> edad;  <span class="cm">// 1. private → nadie accede directamente</span>
+
+    <span class="cm">// 2. getter: devuelve el valor</span>
+    <span class="kw">public int</span> getEdad() {
+        <span class="kw">return</span> edad;
+    }
+
+    <span class="cm">// 3. setter: valida antes de asignar</span>
+    <span class="kw">public void</span> setEdad(<span class="kw">int</span> edad) {
+        <span class="kw">if</span> (edad &gt;= <span class="nm">0</span>) {
+            <span class="kw">this</span>.edad = edad;
+        } <span class="kw">else</span> {
+            <span class="ty">System</span>.out.println(<span class="str">"Error: edad no puede ser negativa"</span>);
+            <span class="cm">// o: throw new IllegalArgumentException("Edad inválida");</span>
+        }
+    }
+}</pre>
+      <p>Ahora <code>p.edad = -5</code> no compila. El acceso es solo a través del setter, que valida.</p>
+      <div class="tip-box">
+        <p>Los tres conceptos clave a mencionar en el examen: <strong>private</strong>, <strong>getter</strong>, <strong>setter con validación</strong>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────── -->
+  <section class="section" id="recursividad">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div class="section-title-group">
+        <h2>Recursividad</h2>
+        <div class="freq">Aparece en: <span>★★★ la profe la enfatizó especialmente</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Los dos elementos que siempre tiene una función recursiva</h3>
+      <p><span class="pill pill-red">1. Caso base</span> Condición que detiene la recursión. Sin él → bucle infinito → <code>StackOverflowError</code>.</p>
+      <p><span class="pill pill-purple">2. Llamada recursiva</span> El método se llama a sí mismo con un argumento que se acerca al caso base.</p>
+    </div>
+
+    <div class="card">
+      <h3>Ejemplo del examen de mayo — recursiva(4)</h3>
+<pre><span class="kw">public static void</span> recursiva(<span class="kw">int</span> n) {
+    <span class="kw">if</span> (n == <span class="nm">0</span>) <span class="kw">return</span>;   <span class="cm">// ← caso base</span>
+    <span class="ty">System</span>.out.print(<span class="str">"&lt;"</span>);
+    recursiva(n - <span class="nm">1</span>);      <span class="cm">// ← llamada recursiva ANTES de ">"</span>
+    <span class="ty">System</span>.out.print(<span class="str">"&gt;"</span>);
+}</pre>
+      <p>Pila de llamadas para <code>recursiva(4)</code>:</p>
+      <div class="stack">
+        <div class="stack-frame">recursiva(4) <span class="prints">imprime "&lt;" ... luego "&gt;"</span></div>
+        <div class="stack-arrow">↳ llama a:</div>
+        <div class="stack-frame">recursiva(3) <span class="prints">imprime "&lt;" ... luego "&gt;"</span></div>
+        <div class="stack-arrow">↳ llama a:</div>
+        <div class="stack-frame">recursiva(2) <span class="prints">imprime "&lt;" ... luego "&gt;"</span></div>
+        <div class="stack-arrow">↳ llama a:</div>
+        <div class="stack-frame">recursiva(1) <span class="prints">imprime "&lt;" ... luego "&gt;"</span></div>
+        <div class="stack-arrow">↳ llama a:</div>
+        <div class="stack-frame stack-base">recursiva(0) <span class="prints">return → caso base, nada más</span></div>
+      </div>
+      <p>Resolución de vuelta (de abajo arriba): las llamadas anteriores completan su <code>&gt;</code></p>
+      <div class="result">&lt;&lt;&lt;&lt;&gt;&gt;&gt;&gt;</div>
+    </div>
+
+    <div class="card">
+      <h3>Ejemplo del examen de junio — recursivo(3) imprime n dos veces</h3>
+<pre><span class="kw">public static void</span> recursivo(<span class="kw">int</span> n) {
+    <span class="ty">System</span>.out.println(n);         <span class="cm">// antes: imprime n al bajar</span>
+    <span class="kw">if</span> (n &gt; <span class="nm">0</span>) {
+        recursivo(n - <span class="nm">1</span>);
+    }
+    <span class="ty">System</span>.out.println(n);         <span class="cm">// después: imprime n al subir</span>
+}</pre>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Fase</th><th>Llamada</th><th>Imprime</th></tr>
+          <tr><td>Bajada</td><td>recursivo(3)</td><td>3</td></tr>
+          <tr><td>Bajada</td><td>recursivo(2)</td><td>2</td></tr>
+          <tr><td>Bajada</td><td>recursivo(1)</td><td>1</td></tr>
+          <tr><td>Bajada</td><td>recursivo(0)</td><td>0</td></tr>
+          <tr><td>Subida</td><td>vuelve a recursivo(0)</td><td>0</td></tr>
+          <tr><td>Subida</td><td>vuelve a recursivo(1)</td><td>1</td></tr>
+          <tr><td>Subida</td><td>vuelve a recursivo(2)</td><td>2</td></tr>
+          <tr><td>Subida</td><td>vuelve a recursivo(3)</td><td>3</td></tr>
+        </table>
+      </div>
+      <div class="result">3 2 1 0 0 1 2 3</div>
+    </div>
+
+    <div class="card">
+      <h3>Ejemplo clásico — potencia(2, 4)</h3>
+<pre><span class="kw">static int</span> potencia(<span class="kw">int</span> base, <span class="kw">int</span> exponente) {
+    <span class="kw">if</span> (exponente == <span class="nm">0</span>) <span class="kw">return</span> <span class="nm">1</span>;          <span class="cm">// caso base: b^0 = 1</span>
+    <span class="kw">return</span> base * potencia(base, exponente - <span class="nm">1</span>);
+}</pre>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Llamada</th><th>Devuelve</th></tr>
+          <tr><td>potencia(2, 4)</td><td>2 * potencia(2, 3)</td></tr>
+          <tr><td>potencia(2, 3)</td><td>2 * potencia(2, 2)</td></tr>
+          <tr><td>potencia(2, 2)</td><td>2 * potencia(2, 1)</td></tr>
+          <tr><td>potencia(2, 1)</td><td>2 * potencia(2, 0)</td></tr>
+          <tr><td>potencia(2, 0)</td><td>1 ← caso base</td></tr>
+        </table>
+      </div>
+      <p>Resolución: 2×2×2×2×1 = <strong>16</strong>. Se hacen 5 llamadas en total (incluyendo la inicial).</p>
+      <div class="alert">
+        <p><strong>Si el exponente fuera negativo:</strong> nunca se alcanza el caso base (<code>exponente == 0</code>), la recursión no termina → <code>StackOverflowError</code>. Solución: añadir validación al inicio.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────── -->
+  <section class="section" id="trazas">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div class="section-title-group">
+        <h2>Trazas de bucles anidados</h2>
+        <div class="freq">Aparece en: <span>★★★ todos los exámenes</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Método infalible: una tabla con una columna por variable</h3>
+      <p>Cada fila = una iteración del bucle interior. Rellena celda por celda, sin saltar pasos.</p>
+    </div>
+
+    <div class="card">
+      <h3>Ejemplo del examen de abril — suma con i*j</h3>
+<pre><span class="kw">int</span> suma = <span class="nm">0</span>;
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">1</span>; i &lt;= <span class="nm">3</span>; i++) {
+    <span class="kw">for</span> (<span class="kw">int</span> j = <span class="nm">1</span>; j &lt;= <span class="nm">2</span>; j++) {
+        suma += i * j;
+        <span class="ty">System</span>.out.println(<span class="str">"i: "</span> + i + <span class="str">", j: "</span> + j + <span class="str">", suma: "</span> + suma);
+    }
+}
+<span class="ty">System</span>.out.println(<span class="str">"Suma final: "</span> + suma);</pre>
+      <div class="table-wrap">
+        <table>
+          <tr><th>i</th><th>j</th><th>i*j</th><th>suma</th><th>Salida</th></tr>
+          <tr><td>1</td><td>1</td><td>1</td><td>0+1 = 1</td><td>i: 1, j: 1, suma: 1</td></tr>
+          <tr><td>1</td><td>2</td><td>2</td><td>1+2 = 3</td><td>i: 1, j: 2, suma: 3</td></tr>
+          <tr><td>2</td><td>1</td><td>2</td><td>3+2 = 5</td><td>i: 2, j: 1, suma: 5</td></tr>
+          <tr><td>2</td><td>2</td><td>4</td><td>5+4 = 9</td><td>i: 2, j: 2, suma: 9</td></tr>
+          <tr><td>3</td><td>1</td><td>3</td><td>9+3 = 12</td><td>i: 3, j: 1, suma: 12</td></tr>
+          <tr><td>3</td><td>2</td><td>6</td><td>12+6 = 18</td><td>i: 3, j: 2, suma: 18</td></tr>
+        </table>
+      </div>
+      <div class="result">Suma final: 18</div>
+    </div>
+
+    <div class="card">
+      <h3>Ejemplo del examen de mayo — resultado con resta y j decreciente</h3>
+<pre><span class="kw">int</span> resultado = <span class="nm">18</span>;
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">1</span>; i &lt;= <span class="nm">3</span>; i++) {
+    <span class="kw">for</span> (<span class="kw">int</span> j = <span class="nm">3</span>; j &gt;= <span class="nm">1</span>; j--) {  <span class="cm">// j decrece</span>
+        resultado -= i;
+        <span class="ty">System</span>.out.println(i + <span class="str">" - "</span> + j + <span class="str">" - res: "</span> + resultado);
+    }
+}</pre>
+      <div class="table-wrap">
+        <table>
+          <tr><th>i</th><th>j</th><th>resultado</th><th>Salida</th></tr>
+          <tr><td>1</td><td>3</td><td>18-1 = 17</td><td>1 - 3 - res: 17</td></tr>
+          <tr><td>1</td><td>2</td><td>17-1 = 16</td><td>1 - 2 - res: 16</td></tr>
+          <tr><td>1</td><td>1</td><td>16-1 = 15</td><td>1 - 1 - res: 15</td></tr>
+          <tr><td>2</td><td>3</td><td>15-2 = 13</td><td>2 - 3 - res: 13</td></tr>
+          <tr><td>2</td><td>2</td><td>13-2 = 11</td><td>2 - 2 - res: 11</td></tr>
+          <tr><td>2</td><td>1</td><td>11-2 = 9</td><td>2 - 1 - res: 9</td></tr>
+          <tr><td>3</td><td>3</td><td>9-3 = 6</td><td>3 - 3 - res: 6</td></tr>
+          <tr><td>3</td><td>2</td><td>6-3 = 3</td><td>3 - 2 - res: 3</td></tr>
+          <tr><td>3</td><td>1</td><td>3-3 = 0</td><td>3 - 1 - res: 0</td></tr>
+        </table>
+      </div>
+      <div class="result">resultado final: 0</div>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────── -->
+  <section class="section" id="excepciones">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <div class="section-title-group">
+        <h2>Excepciones personalizadas</h2>
+        <div class="freq">Aparece en: <span>★★ exámenes de abril y mayo — mismo ejercicio</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Estructura de una excepción personalizada</h3>
+<pre><span class="cm">// 1. Crear la clase que extiende Exception (o RuntimeException)</span>
+<span class="kw">public class</span> <span class="ty">FondosInsuficientesException</span> <span class="kw">extends</span> <span class="ty">Exception</span> {
+    <span class="kw">public</span> FondosInsuficientesException(<span class="ty">String</span> mensaje) {
+        <span class="kw">super</span>(mensaje);   <span class="cm">// pasa el mensaje a la clase padre</span>
+    }
+}
+
+<span class="cm">// 2. Usarla con throw + declarar throws en la firma</span>
+<span class="kw">public void</span> retirar(<span class="kw">double</span> cantidad, <span class="kw">double</span> saldo)
+        <span class="kw">throws</span> <span class="ty">FondosInsuficientesException</span> {
+    <span class="kw">if</span> (cantidad &gt; saldo) {
+        <span class="kw">throw new</span> <span class="ty">FondosInsuficientesException</span>(
+            <span class="str">"Fondos insuficientes. Saldo: "</span> + saldo);
+    } <span class="kw">else</span> {
+        saldo -= cantidad;
+    }
+}</pre>
+    </div>
+
+    <div class="card">
+      <h3>¿Exception o RuntimeException? — la justificación que piden</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Tipo</th><th>Cuándo usarla</th><th>¿El compilador obliga a capturarla?</th></tr>
+          <tr><td>Exception (checked)</td><td>Errores recuperables: fondos insuficientes, archivo no encontrado</td><td>Sí → hay que poner try/catch o throws</td></tr>
+          <tr><td>RuntimeException (unchecked)</td><td>Errores de programación: índice inválido, null pointer</td><td>No → es opcional capturarla</td></tr>
+        </table>
+      </div>
+      <div class="tip-box">
+        <p>Para el sistema bancario, <strong>Exception</strong> tiene más sentido: el usuario puede intentar retirar una cantidad menor, es un error recuperable y vale la pena obligar al programador a manejarlo.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────── -->
+  <section class="section" id="interfaces">
+    <div class="section-header">
+      <div class="section-num">07</div>
+      <div class="section-title-group">
+        <h2>Interfaces y herencia múltiple</h2>
+        <div class="freq">Aparece en: <span>★★ exámenes de abril, mayo y junio</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>¿Cómo resuelve Java la herencia múltiple?</h3>
+      <p>Java <strong>no permite</strong> heredar de dos clases a la vez (<code>extends ClaseA, ClaseB</code> no compila). La solución son las <strong>interfaces</strong>: una clase puede implementar cuantas quiera.</p>
+<pre><span class="kw">interface</span> <span class="ty">Volador</span>  { <span class="kw">void</span> volar();  }
+<span class="kw">interface</span> <span class="ty">Nadador</span>  { <span class="kw">void</span> nadar();  }
+
+<span class="kw">class</span> <span class="ty">Pato</span> <span class="kw">extends</span> <span class="ty">Animal</span>
+        <span class="kw">implements</span> <span class="ty">Volador</span>, <span class="ty">Nadador</span> {   <span class="cm">// múltiples interfaces</span>
+    <span class="kw">public void</span> volar() { <span class="ty">System</span>.out.println(<span class="str">"Volando"</span>); }
+    <span class="kw">public void</span> nadar() { <span class="ty">System</span>.out.println(<span class="str">"Nadando"</span>); }
+}</pre>
+    </div>
+
+    <div class="card">
+      <h3>Clase anónima — solución temporal (examen de junio)</h3>
+      <p>Si no existe ninguna clase que implemente una interfaz pero necesitas usarla puntualmente, puedes crear una <strong>clase anónima</strong> directamente en el código:</p>
+<pre><span class="ty">GestionInventario</span> g = <span class="kw">new</span> <span class="ty">GestionInventario</span>() {
+    <span class="kw">public void</span> verificarStock() {
+        <span class="ty">System</span>.out.println(<span class="str">"Verificando stock temporalmente..."</span>);
+    }
+};
+g.verificarStock();</pre>
+      <p>Esto crea una clase sin nombre que implementa la interfaz al vuelo, sin necesidad de crear un archivo <code>.java</code> nuevo.</p>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────── -->
+  <section class="section" id="arrays2d">
+    <div class="section-header">
+      <div class="section-num">08</div>
+      <div class="section-title-group">
+        <h2>Arrays bidimensionales</h2>
+        <div class="freq">Aparece en: <span>★★ exámenes de abril y mayo</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>¿Qué imprime este código?</h3>
+<pre><span class="kw">int</span>[][] matriz = {
+    {<span class="nm">5</span>, <span class="nm">3</span>, <span class="nm">2</span>},
+    {<span class="nm">1</span>, <span class="nm">4</span>, <span class="nm">6</span>},
+    {<span class="nm">7</span>, <span class="nm">8</span>, <span class="nm">9</span>}
+};
+<span class="kw">int</span> suma = <span class="nm">0</span>, j = <span class="nm">1</span>;     <span class="cm">// j fijo = columna 1</span>
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; matriz.length; i++) {
+    suma += matriz[i][j]; <span class="cm">// suma columna 1: 3 + 4 + 8</span>
+}
+<span class="ty">System</span>.out.println(suma);</pre>
+      <div class="table-wrap">
+        <table>
+          <tr><th>i</th><th>j (fijo=1)</th><th>matriz[i][j]</th><th>suma</th></tr>
+          <tr><td>0</td><td>1</td><td>matriz[0][1] = 3</td><td>0+3 = 3</td></tr>
+          <tr><td>1</td><td>1</td><td>matriz[1][1] = 4</td><td>3+4 = 7</td></tr>
+          <tr><td>2</td><td>1</td><td>matriz[2][1] = 8</td><td>7+8 = 15</td></tr>
+        </table>
+      </div>
+      <div class="result">15</div>
+    </div>
+
+    <div class="card">
+      <h3>Sumar siempre la última fila — sin importar tamaño</h3>
+<pre><span class="kw">int</span> suma = <span class="nm">0</span>;
+<span class="kw">int</span> ultimaFila = matriz.length - <span class="nm">1</span>;  <span class="cm">// índice de la última fila</span>
+<span class="kw">for</span> (<span class="kw">int</span> j = <span class="nm">0</span>; j &lt; matriz[ultimaFila].length; j++) {
+    suma += matriz[ultimaFila][j];    <span class="cm">// 7 + 8 + 9 = 24</span>
+}
+<span class="ty">System</span>.out.println(suma);  <span class="cm">// 24</span></pre>
+      <p class="muted">Clave: <code>matriz.length</code> = número de filas. <code>matriz[i].length</code> = número de columnas de la fila i.</p>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────── -->
+  <section class="section" id="diagramas">
+    <div class="section-header">
+      <div class="section-num">09</div>
+      <div class="section-title-group">
+        <h2>Diagramas de flujo</h2>
+        <div class="freq">Aparece en: <span>★★ exámenes de mayo y junio</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Símbolos que debes conocer</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Símbolo</th><th>Forma</th><th>Uso</th></tr>
+          <tr><td>Inicio / Fin</td><td>Óvalo / Elipse</td><td>Empieza y termina el diagrama</td></tr>
+          <tr><td>Proceso</td><td>Rectángulo</td><td>Asignaciones, cálculos (suma += i)</td></tr>
+          <tr><td>Entrada / Salida</td><td>Paralelogramo</td><td>Leer por teclado / imprimir</td></tr>
+          <tr><td>Decisión</td><td>Rombo</td><td>Condiciones if, while, for → Sí / No</td></tr>
+          <tr><td>Conector</td><td>Círculo pequeño</td><td>Unir flujos largos</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Algoritmo del examen de mayo — mayor de dos números</h3>
+      <p>Programa que recibe dos números y dice cuál es mayor, o si son iguales:</p>
+<pre><span class="cm">Diagrama de flujo (descripción textual):</span>
+
+[INICIO]
+   ↓
+[Leer A, B]
+   ↓
+¿A > B? → Sí → [Imprimir "A es mayor"] → [FIN]
+   ↓ No
+¿A == B? → Sí → [Imprimir "Son iguales"] → [FIN]
+   ↓ No
+[Imprimir "B es mayor"]
+   ↓
+[FIN]</pre>
+      <div class="tip-box">
+        <p>En papel: dibuja los óvalos de inicio/fin, paralelogramos para leer/imprimir, rombos para las condiciones if, y rectángulos para operaciones.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────── -->
+  <section class="section" id="lombok">
+    <div class="section-header">
+      <div class="section-num">10</div>
+      <div class="section-title-group">
+        <h2>Lombok — @AllArgsConstructor, @Getter</h2>
+        <div class="freq">Aparece en: <span>★ examen de junio (convocatoria extraordinaria)</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Qué hace cada anotación</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Anotación</th><th>Genera automáticamente</th></tr>
+          <tr><td>@AllArgsConstructor</td><td>Constructor con todos los atributos como parámetros</td></tr>
+          <tr><td>@NoArgsConstructor</td><td>Constructor vacío (sin parámetros)</td></tr>
+          <tr><td>@Getter</td><td>Getters para todos los atributos privados</td></tr>
+          <tr><td>@Setter</td><td>Setters para todos los atributos privados</td></tr>
+          <tr><td>@Data</td><td>@Getter + @Setter + toString + equals + hashCode</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Ejemplo del examen de junio</h3>
+<pre><span class="cm">@AllArgsConstructor   // genera: new Alumno(nia, nombre)</span>
+<span class="cm">@Getter               // genera: getNia(), getNombre()</span>
+<span class="kw">class</span> <span class="ty">Alumno</span> {
+    <span class="kw">private int</span> nia;
+    <span class="kw">private</span> <span class="ty">String</span> nombre;
+
+    <span class="kw">public static void</span> obtenerDescripcion(<span class="ty">Alumno</span> alumno) {
+        <span class="ty">System</span>.out.println(<span class="str">"Alumno: "</span> + alumno.getNombre()
+            + <span class="str">", NIA: "</span> + alumno.getNia());
+    }
+}
+
+<span class="cm">// Llamada desde main:</span>
+<span class="ty">Alumno</span> a = <span class="kw">new</span> <span class="ty">Alumno</span>(<span class="nm">12345</span>, <span class="str">"Ana"</span>);   <span class="cm">// @AllArgsConstructor</span>
+<span class="ty">Alumno</span>.obtenerDescripcion(a);             <span class="cm">// método estático → Alumno.metodo()</span></pre>
+      <div class="alert">
+        <p><strong>¿Podemos añadir @NoArgsConstructor?</strong> Con Lombok sí, pero hay que tener cuidado: si tienes atributos <code>final</code>, el constructor vacío no puede dejarlos sin valor → error. En este caso los atributos no son final, así que sería posible.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+  <section class="section">
+    <div class="card" style="border-color: rgba(124,106,247,0.3); background: rgba(124,106,247,0.06);">
+      <h3 style="color: var(--accent);">Checklist de última hora</h3>
+      <p>✓ &nbsp;Iterator: siempre <code>it.remove()</code>, nunca <code>lista.remove()</code> dentro del while</p>
+      <p>✓ &nbsp;Polimorfismo: el tipo del objeto manda, no el de la referencia</p>
+      <p>✓ &nbsp;Encapsulación: <code>private</code> + getter + setter con <code>if (edad >= 0)</code></p>
+      <p>✓ &nbsp;Recursividad: identificar caso base, hacer pila de llamadas fila a fila</p>
+      <p>✓ &nbsp;Trazas: una tabla, una fila por iteración interior, no te saltes nada</p>
+      <p>✓ &nbsp;Excepciones: <code>extends Exception</code> = checked (compilador obliga a manejarla)</p>
+      <p>✓ &nbsp;Interfaces: solución a herencia múltiple + clase anónima como solución temporal</p>
+      <p>✓ &nbsp;Arrays 2D: <code>matriz.length</code> = filas, <code>matriz[i].length</code> = columnas de fila i</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Generado para repasar la recuperación · Programación Java Temas 1–7
+</footer>
+
+</body>
+</html>

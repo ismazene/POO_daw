@@ -8,6 +8,48 @@ public class ChuletaRecuperacion {
     static Scanner teclado = new Scanner(System.in);
     static Random random = new Random();
 
+
+    ///
+    /// Si cae polimorfismo:
+    ///   “Se ejecuta el método de la subclase porque el objeto real es de ese tipo. Eso es polimorfismo dinámico.”
+    ///
+    ///   Si cae “¿y si no sobrescribe?”:
+    ///   “Si la subclase no sobrescribe el método, se ejecuta el heredado de la clase padre.”
+    ///
+    ///   Si cae encapsulación:
+    ///   “El problema es que el atributo público puede recibir valores inválidos. La solución es ponerlo private y controlar el
+    ///   acceso con getter y setter, validando el dato.”
+    ///
+    ///   Si cae herencia múltiple:
+    ///   “Java no permite herencia múltiple de clases para evitar ambigüedades. La alternativa es implementar varias
+    ///   interfaces.”
+    ///
+    ///   Si cae Iterator:
+    ///   “No se debe borrar con for-each porque puede lanzar ConcurrentModificationException. Con Iterator sí se puede usando
+    ///   remove().”
+    ///
+    ///   Si cae excepción personalizada:
+    ///   “Se crea una clase que hereda de Exception o RuntimeException para representar un error concreto del dominio, por
+    ///   ejemplo saldo insuficiente.”
+    ///
+    ///   Si cae recursividad:
+    ///   “Un método recursivo se llama a sí mismo y necesita un caso base para terminar. Las llamadas pendientes se guardan en
+    ///   la pila de llamadas.”
+    ///
+    ///   Si cae “¿qué pasa si no hay caso base correcto?”:
+    ///   “La recursión no termina y puede producir un StackOverflowError.”
+    ///
+    ///   Si cae matrices:
+    ///   “En una matriz, el primer índice es la fila y el segundo la columna: matriz[i][j].”
+    ///
+    ///   Si cae vector/array:
+    ///   “Se recorre normalmente con un for desde 0 hasta length - 1.”
+    ///
+    ///   Si cae traza de bucles:
+    ///   “Hay que seguir la ejecución paso a paso, anotando en cada vuelta los valores de las variables y el acumulador.”
+    ///
+    ///   Si cae diagrama de flujo:
+    ///   “Primero identifico entradas, luego proceso, después decisión si la hay, y por último salida.”
     /*
     ######################################################################
     # CHULETA DE RECUPERACION
@@ -51,7 +93,7 @@ public class ChuletaRecuperacion {
     #  2. [ATRIBUTOS] ATRIBUTOS TIPICOS
     #  3. [CONSTRUCTOR] CONSTRUCTOR + GETTERS/SETTERS
     #  4. [ENUM] ENUMS
-    #  5. [INTERFAZ] INTERFACES
+    #  5. [INTERFAZ] INTERFACES.
     #  6. [ABSTRACTA] CLASE ABSTRACTA
     #  7. [HERENCIA] HERENCIA
     #  8. [RANDOM] METODOS UTILES
@@ -382,6 +424,7 @@ public class ChuletaRecuperacion {
         } else if (tipo.equalsIgnoreCase("concierto")) {
             nuevoEvento = new Concierto(nombre, fecha, precio);
         } else {
+
             System.out.println("No existe el tipo de evento.");
             return;
         }
@@ -1380,6 +1423,23 @@ public class ChuletaRecuperacion {
     ######################################################################
     # 72. [PLANTILLA] PLANTILLA DE CLASE DE EXAMEN
     ######################################################################
+    Random rnd = new Random();
+
+    // 4 dígitos: 1000–9999
+    int numeros = rnd.nextInt(9000) + 1000;
+
+    // letras válidas en matrículas españolas (sin vocales, sin Ñ, sin Q)
+    String letrasValidas = "BCDFGHJKLMNPRSTUVWXYZ";
+
+    // 3 letras aleatorias del conjunto
+    String letras = "";
+    for (int i = 0; i < 3; i++) {
+        int pos = rnd.nextInt(letrasValidas.length());
+        letras += letrasValidas.charAt(pos);
+    }
+
+       String matricula = numeros + " " + letras;
+
 
     public class Ticket {
         private String matricula;

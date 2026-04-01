@@ -1,6 +1,7 @@
 package Recuperacion_1.Parking;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -8,9 +9,9 @@ public class Parking {
     private String ciudad;
     private int plazas_totales;
     private double precio_minuto;
-    private static List<Ticket> clientesActuales = new ArrayList<>();
+    private List<Ticket> clientesActuales = new ArrayList<>();
 
-    private static Random random = new Random();
+    static Random random = new Random();
     private static String letras = "BCDFGHJKLMNPQRSTVWXYZ";
     private static String numeros = "0123456789";
 
@@ -75,22 +76,46 @@ public class Parking {
             }
 
             if (!repetida) {
-                int minutos = random.nextInt(300)+1;
+                int minutos = random.nextInt(300) + 1;
                 clientesActuales.add(new Ticket(matricula, minutos, Estado.RECOGIDO));
             }
         }
     }
-    public void mostrarClientesActuales(){
-        System.out.println("*** PARKING MUTXAMEL ***");
 
-        for (Ticket ticket : clientesActuales){
-            System.out.println("Matricula: " + ticket.getMatricula() +  " - " + "minutos: " + ticket.getMinutos() + " - " + "estado: " + ticket.getEstado());
+    public void mostrarClientesActuales() {
+        System.out.println("*** PARKING " + ciudad.toUpperCase() + " ***");
+        for (Ticket ticket : clientesActuales) {
+            System.out.println("Matricula: " + ticket.getMatricula() + " | Minutos: " + ticket.getMinutos() + " | Estado: " + ticket.getEstado());
         }
     }
-    public void comprobarPlazas(int plazas_totales, List<Ticket> clienteActuales){
 
-        int ocupadas = clienteActuales.size();
-        int libre = plazasTotales - ocupadas
+    public void anyadirCliente(Ticket ticket) {
+        clientesActuales.add(ticket);
+    }
 
+    public void comprobarPlazas() {
+        int ocupadas = clientesActuales.size();
+        int libres = plazas_totales - ocupadas;
+
+        if (libres <= 0) {
+            System.out.println("COMPLETO");
+        } else {
+            System.out.println("LIBRE (" + libres + " plazas libres)");
         }
+    }
+
+    public Ticket validarTicket(String matricula) {
+        for (Ticket ticket : clientesActuales) {
+            if (ticket.getMatricula().equalsIgnoreCase(matricula)) {
+                return ticket;
+            }
+        }
+        return null;
+    }
+
+    public List<Ticket> getClientesOrdenadosPorMinutos() {
+        List<Ticket> listaOrdenada = new ArrayList<>(clientesActuales);
+        listaOrdenada.sort(Comparator.comparing(Ticket::getMinutos));
+        return listaOrdenada;
+    }
 }

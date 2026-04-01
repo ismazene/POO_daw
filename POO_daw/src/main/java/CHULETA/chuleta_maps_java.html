@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chuleta — Maps e Iterators en Java</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,600;1,400&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e1016;
+    --card: #13161f;
+    --border: #1f2333;
+    --accent: #00e5ff;
+    --green: #69ff94;
+    --yellow: #ffd166;
+    --red: #ff6b6b;
+    --purple: #c77dff;
+    --text: #dde3f0;
+    --muted: #5a6080;
+    --code-bg: #080a10;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'IBM Plex Mono', monospace;
+    background: var(--bg);
+    color: var(--text);
+    padding: 1.5rem;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+  }
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #fff;
+  }
+  h1 span { color: var(--accent); }
+  .subtitle { color: var(--muted); font-size: 11px; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1rem;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .card-header {
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dot-cyan   { background: var(--accent); }
+  .dot-green  { background: var(--green); }
+  .dot-yellow { background: var(--yellow); }
+  .dot-red    { background: var(--red); }
+  .dot-purple { background: var(--purple); }
+  .card-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .cyan   { color: var(--accent); }
+  .green  { color: var(--green); }
+  .yellow { color: var(--yellow); }
+  .red    { color: var(--red); }
+  .purple { color: var(--purple); }
+  pre {
+    padding: 14px;
+    background: var(--code-bg);
+    overflow-x: auto;
+    font-size: 12.5px;
+    line-height: 1.65;
+    margin: 0;
+  }
+  .kw  { color: #c792ea; }
+  .ty  { color: #82aaff; }
+  .str { color: #c3e88d; }
+  .cm  { color: var(--muted); font-style: italic; }
+  .nm  { color: var(--yellow); }
+  .fn  { color: var(--accent); }
+  .note {
+    padding: 8px 14px;
+    background: rgba(0,229,255,0.04);
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .note b { color: var(--accent); font-weight: 600; }
+  .full { grid-column: 1 / -1; }
+  @media (max-width: 680px) { .grid { grid-template-columns: 1fr; } }
+  @media print {
+    body { background: #fff; color: #000; padding: 0.5rem; }
+    .card { border: 1px solid #ccc; break-inside: avoid; }
+    .card-header { background: #f0f0f0; }
+    pre { background: #f8f8f8; color: #000; }
+    .kw { color: #7c3aed; } .ty { color: #1d4ed8; }
+    .str { color: #15803d; } .cm { color: #6b7280; }
+    .nm { color: #b45309; } .fn { color: #0891b2; }
+    h1 { color: #000; } h1 span { color: #0891b2; }
+    .cyan{color:#0891b2} .green{color:#15803d} .yellow{color:#b45309} .red{color:#dc2626} .purple{color:#7c3aed}
+    .note { background: #f0f9ff; }
+    .dot-cyan{background:#0891b2} .dot-green{background:#15803d} .dot-yellow{background:#b45309}
+    .dot-red{background:#dc2626} .dot-purple{background:#7c3aed}
+    @page { margin: 1cm; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1><span>Map</span> + <span>Iterator</span> en Java</h1>
+  <span class="subtitle">// chuleta rápida · examen práctico</span>
+</header>
+
+<div class="grid">
+
+  <!-- CREAR -->
+  <div class="card">
+    <div class="card-header">
+      <div class="dot dot-cyan"></div>
+      <span class="card-title cyan">Crear un Map</span>
+    </div>
+    <pre><span class="cm">// HashMap — el más común, sin orden</span>
+<span class="ty">Map</span>&lt;<span class="ty">String</span>, <span class="ty">Integer</span>&gt; mapa = <span class="kw">new</span> <span class="ty">HashMap</span>&lt;&gt;();
+
+<span class="cm">// TreeMap — ordenado por clave (A-Z)</span>
+<span class="ty">Map</span>&lt;<span class="ty">String</span>, <span class="ty">Integer</span>&gt; mapa = <span class="kw">new</span> <span class="ty">TreeMap</span>&lt;&gt;();
+
+<span class="cm">// LinkedHashMap — mantiene orden de inserción</span>
+<span class="ty">Map</span>&lt;<span class="ty">String</span>, <span class="ty">Integer</span>&gt; mapa = <span class="kw">new</span> <span class="ty">LinkedHashMap</span>&lt;&gt;();</pre>
+    <div class="note"><b>Import:</b> import java.util.HashMap; &nbsp;/&nbsp; import java.util.*;</div>
+  </div>
+
+  <!-- AÑADIR / MODIFICAR -->
+  <div class="card">
+    <div class="card-header">
+      <div class="dot dot-green"></div>
+      <span class="card-title green">Añadir y modificar</span>
+    </div>
+    <pre><span class="cm">// put(clave, valor) — añade o sobreescribe</span>
+mapa.<span class="fn">put</span>(<span class="str">"Ana"</span>, <span class="nm">25</span>);
+mapa.<span class="fn">put</span>(<span class="str">"Luis"</span>, <span class="nm">30</span>);
+mapa.<span class="fn">put</span>(<span class="str">"Ana"</span>, <span class="nm">26</span>);  <span class="cm">// sobreescribe el 25</span>
+
+<span class="cm">// putIfAbsent — solo añade si la clave NO existe</span>
+mapa.<span class="fn">putIfAbsent</span>(<span class="str">"Ana"</span>, <span class="nm">99</span>);  <span class="cm">// no hace nada (ya existe)</span>
+mapa.<span class="fn">putIfAbsent</span>(<span class="str">"Eva"</span>, <span class="nm">22</span>);   <span class="cm">// sí añade</span></pre>
+  </div>
+
+  <!-- BUSCAR / OBTENER -->
+  <div class="card">
+    <div class="card-header">
+      <div class="dot dot-yellow"></div>
+      <span class="card-title yellow">Buscar y obtener</span>
+    </div>
+    <pre><span class="cm">// get(clave) — devuelve el valor o null</span>
+<span class="ty">Integer</span> edad = mapa.<span class="fn">get</span>(<span class="str">"Ana"</span>);  <span class="cm">// → 26</span>
+
+<span class="cm">// getOrDefault — valor por defecto si no existe</span>
+<span class="ty">int</span> e = mapa.<span class="fn">getOrDefault</span>(<span class="str">"Pep"</span>, <span class="nm">0</span>);  <span class="cm">// → 0</span>
+
+<span class="cm">// containsKey — ¿existe la clave?</span>
+<span class="kw">if</span> (mapa.<span class="fn">containsKey</span>(<span class="str">"Luis"</span>)) { ... }
+
+<span class="cm">// containsValue — ¿existe el valor?</span>
+<span class="kw">if</span> (mapa.<span class="fn">containsValue</span>(<span class="nm">30</span>)) { ... }</pre>
+  </div>
+
+  <!-- ELIMINAR -->
+  <div class="card">
+    <div class="card-header">
+      <div class="dot dot-red"></div>
+      <span class="card-title red">Eliminar</span>
+    </div>
+    <pre><span class="cm">// remove(clave) — elimina por clave</span>
+mapa.<span class="fn">remove</span>(<span class="str">"Luis"</span>);
+
+<span class="cm">// remove(clave, valor) — solo elimina si coinciden ambos</span>
+mapa.<span class="fn">remove</span>(<span class="str">"Ana"</span>, <span class="nm">26</span>);   <span class="cm">// elimina solo si Ana → 26</span>
+
+<span class="cm">// clear() — vacía el mapa entero</span>
+mapa.<span class="fn">clear</span>();
+
+<span class="cm">// isEmpty() — ¿está vacío?</span>
+<span class="kw">boolean</span> vacio = mapa.<span class="fn">isEmpty</span>();
+
+<span class="cm">// size() — número de entradas</span>
+<span class="kw">int</span> n = mapa.<span class="fn">size</span>();</pre>
+  </div>
+
+  <!-- RECORRER -->
+  <div class="card full">
+    <div class="card-header">
+      <div class="dot dot-purple"></div>
+      <span class="card-title purple">Recorrer el mapa — 3 formas</span>
+    </div>
+    <pre><span class="cm">// 1. entrySet() — clave Y valor a la vez (la más usada)</span>
+<span class="kw">for</span> (<span class="ty">Map.Entry</span>&lt;<span class="ty">String</span>, <span class="ty">Integer</span>&gt; entry : mapa.<span class="fn">entrySet</span>()) {
+    <span class="ty">System</span>.out.println(entry.<span class="fn">getKey</span>() + <span class="str">" → "</span> + entry.<span class="fn">getValue</span>());
+}
+
+<span class="cm">// 2. keySet() — solo claves</span>
+<span class="kw">for</span> (<span class="ty">String</span> clave : mapa.<span class="fn">keySet</span>()) {
+    <span class="ty">System</span>.out.println(clave);
+}
+
+<span class="cm">// 3. values() — solo valores</span>
+<span class="kw">for</span> (<span class="ty">Integer</span> valor : mapa.<span class="fn">values</span>()) {
+    <span class="ty">System</span>.out.println(valor);
+}
+
+<span class="cm">// 4. forEach con lambda (forma moderna)</span>
+mapa.<span class="fn">forEach</span>((clave, valor) -&gt;
+    <span class="ty">System</span>.out.println(clave + <span class="str">" → "</span> + valor));</pre>
+  </div>
+
+  <!-- ELIMINAR MIENTRAS RECORRES -->
+  <div class="card full">
+    <div class="card-header">
+      <div class="dot dot-red"></div>
+      <span class="card-title red">Eliminar entradas mientras recorres — con Iterator</span>
+    </div>
+    <pre><span class="cm">// NO puedes usar for-each + remove() → ConcurrentModificationException</span>
+<span class="cm">// SOLUCIÓN: Iterator sobre entrySet()</span>
+
+<span class="ty">Iterator</span>&lt;<span class="ty">Map.Entry</span>&lt;<span class="ty">String</span>, <span class="ty">Integer</span>&gt;&gt; it = mapa.<span class="fn">entrySet</span>().<span class="fn">iterator</span>();
+<span class="kw">while</span> (it.<span class="fn">hasNext</span>()) {
+    <span class="ty">Map.Entry</span>&lt;<span class="ty">String</span>, <span class="ty">Integer</span>&gt; entry = it.<span class="fn">next</span>();
+    <span class="kw">if</span> (entry.<span class="fn">getValue</span>() &lt; <span class="nm">25</span>) {    <span class="cm">// condición para eliminar</span>
+        it.<span class="fn">remove</span>();               <span class="cm">// SIEMPRE it.remove(), nunca mapa.remove()</span>
+    }
+}</pre>
+    <div class="note"><b>Regla de oro:</b> para eliminar mientras recorres → Iterator + it.remove(). Igual que con ArrayList.</div>
+  </div>
+
+  <!-- EJEMPLO COMPLETO -->
+  <div class="card full">
+    <div class="card-header">
+      <div class="dot dot-cyan"></div>
+      <span class="card-title cyan">Ejemplo completo — gestión de notas de alumnos</span>
+    </div>
+    <pre><span class="kw">import</span> java.util.*;
+
+<span class="kw">public class</span> <span class="ty">EjemploMapa</span> {
+    <span class="kw">public static void</span> main(<span class="ty">String</span>[] args) {
+
+        <span class="ty">Map</span>&lt;<span class="ty">String</span>, <span class="ty">Double</span>&gt; notas = <span class="kw">new</span> <span class="ty">HashMap</span>&lt;&gt;();
+
+        <span class="cm">// Añadir</span>
+        notas.<span class="fn">put</span>(<span class="str">"Ana"</span>, <span class="nm">8.5</span>);
+        notas.<span class="fn">put</span>(<span class="str">"Luis"</span>, <span class="nm">4.0</span>);
+        notas.<span class="fn">put</span>(<span class="str">"Eva"</span>, <span class="nm">9.0</span>);
+        notas.<span class="fn">put</span>(<span class="str">"Pep"</span>, <span class="nm">3.5</span>);
+
+        <span class="cm">// Buscar</span>
+        <span class="ty">System</span>.out.println(<span class="str">"Nota de Ana: "</span> + notas.<span class="fn">get</span>(<span class="str">"Ana"</span>));  <span class="cm">// 8.5</span>
+
+        <span class="cm">// Modificar nota de Luis</span>
+        notas.<span class="fn">put</span>(<span class="str">"Luis"</span>, <span class="nm">5.0</span>);
+
+        <span class="cm">// Eliminar los suspensos (nota < 5) con Iterator</span>
+        <span class="ty">Iterator</span>&lt;<span class="ty">Map.Entry</span>&lt;<span class="ty">String</span>, <span class="ty">Double</span>&gt;&gt; it = notas.<span class="fn">entrySet</span>().<span class="fn">iterator</span>();
+        <span class="kw">while</span> (it.<span class="fn">hasNext</span>()) {
+            <span class="ty">Map.Entry</span>&lt;<span class="ty">String</span>, <span class="ty">Double</span>&gt; entry = it.<span class="fn">next</span>();
+            <span class="kw">if</span> (entry.<span class="fn">getValue</span>() &lt; <span class="nm">5.0</span>) {
+                it.<span class="fn">remove</span>();
+            }
+        }
+
+        <span class="cm">// Imprimir los que quedan</span>
+        <span class="kw">for</span> (<span class="ty">Map.Entry</span>&lt;<span class="ty">String</span>, <span class="ty">Double</span>&gt; e : notas.<span class="fn">entrySet</span>()) {
+            <span class="ty">System</span>.out.println(e.<span class="fn">getKey</span>() + <span class="str">": "</span> + e.<span class="fn">getValue</span>());
+        }
+        <span class="cm">// → Ana: 8.5   Luis: 5.0   Eva: 9.0   (Pep eliminado)</span>
+    }
+}</pre>
+  </div>
+
+  <!-- RESUMEN MÉTODOS -->
+  <div class="card full">
+    <div class="card-header">
+      <div class="dot dot-green"></div>
+      <span class="card-title green">Resumen de métodos — referencia rápida</span>
+    </div>
+    <pre><span class="cm">método                      qué hace</span>
+<span class="cm">──────────────────────────────────────────────────────────────</span>
+mapa.<span class="fn">put</span>(k, v)              añade / sobreescribe
+mapa.<span class="fn">putIfAbsent</span>(k, v)      añade solo si la clave no existe
+mapa.<span class="fn">get</span>(k)                 devuelve valor o null
+mapa.<span class="fn">getOrDefault</span>(k, def)   devuelve valor o 'def' si no existe
+mapa.<span class="fn">containsKey</span>(k)         true si la clave existe
+mapa.<span class="fn">containsValue</span>(v)       true si el valor existe
+mapa.<span class="fn">remove</span>(k)              elimina por clave
+mapa.<span class="fn">remove</span>(k, v)           elimina solo si clave+valor coinciden
+mapa.<span class="fn">size</span>()                 número de pares clave-valor
+mapa.<span class="fn">isEmpty</span>()              true si está vacío
+mapa.<span class="fn">clear</span>()                vacía el mapa
+mapa.<span class="fn">keySet</span>()               Set con todas las claves
+mapa.<span class="fn">values</span>()               Collection con todos los valores
+mapa.<span class="fn">entrySet</span>()             Set de Map.Entry (clave + valor)</pre>
+  </div>
+
+  <!-- ── SEPARADOR ── -->
+  <div class="full" style="border-top: 1px solid var(--border); margin: 0.5rem 0; padding-top: 1rem; display:flex; align-items:center; gap:12px;">
+    <span style="font-family:'Syne',sans-serif; font-size:1.2rem; font-weight:800; color:#fff;">Iterator <span style="color:var(--accent)">en listas</span></span>
+    <span style="color:var(--muted); font-size:11px;">// ArrayList, LinkedList, cualquier Collection</span>
+  </div>
+
+  <!-- MÉTODOS DEL ITERATOR -->
+  <div class="card">
+    <div class="card-header">
+      <div class="dot dot-cyan"></div>
+      <span class="card-title cyan">Métodos del Iterator</span>
+    </div>
+    <pre><span class="cm">método          qué hace</span>
+<span class="cm">─────────────────────────────────────────────</span>
+it.<span class="fn">hasNext</span>()    true si quedan elementos
+it.<span class="fn">next</span>()       devuelve el siguiente y avanza
+it.<span class="fn">remove</span>()     elimina el último devuelto por next()</pre>
+    <div class="note"><b>Orden obligatorio:</b> siempre next() ANTES de remove(), si no → IllegalStateException</div>
+  </div>
+
+  <!-- RECORRER CON ITERATOR -->
+  <div class="card">
+    <div class="card-header">
+      <div class="dot dot-green"></div>
+      <span class="card-title green">Recorrer una lista con Iterator</span>
+    </div>
+    <pre><span class="ty">ArrayList</span>&lt;<span class="ty">String</span>&gt; lista = <span class="kw">new</span> <span class="ty">ArrayList</span>&lt;&gt;();
+lista.<span class="fn">add</span>(<span class="str">"Ana"</span>);
+lista.<span class="fn">add</span>(<span class="str">"Luis"</span>);
+lista.<span class="fn">add</span>(<span class="str">"Eva"</span>);
+
+<span class="ty">Iterator</span>&lt;<span class="ty">String</span>&gt; it = lista.<span class="fn">iterator</span>();
+
+<span class="kw">while</span> (it.<span class="fn">hasNext</span>()) {
+    <span class="ty">String</span> elemento = it.<span class="fn">next</span>();
+    <span class="ty">System</span>.out.println(elemento);
+}
+<span class="cm">// → Ana  Luis  Eva</span></pre>
+    <div class="note"><b>Equivalente al for-each</b>, pero dándonos control total sobre el cursor.</div>
+  </div>
+
+  <!-- ELIMINAR MIENTRAS RECORRES LISTA -->
+  <div class="card">
+    <div class="card-header">
+      <div class="dot dot-red"></div>
+      <span class="card-title red">Eliminar mientras recorres</span>
+    </div>
+    <pre><span class="ty">ArrayList</span>&lt;<span class="ty">Integer</span>&gt; nums =
+    <span class="kw">new</span> <span class="ty">ArrayList</span>&lt;&gt;(<span class="ty">Arrays</span>.asList(<span class="nm">2</span>,<span class="nm">4</span>,<span class="nm">6</span>,<span class="nm">8</span>,<span class="nm">10</span>));
+
+<span class="ty">Iterator</span>&lt;<span class="ty">Integer</span>&gt; it = nums.<span class="fn">iterator</span>();
+<span class="kw">while</span> (it.<span class="fn">hasNext</span>()) {
+    <span class="kw">int</span> n = it.<span class="fn">next</span>();
+    <span class="kw">if</span> (n &gt; <span class="nm">5</span>) {
+        it.<span class="fn">remove</span>(); <span class="cm">// elimina el elemento actual</span>
+    }
+}
+<span class="cm">// nums → [2, 4]</span></pre>
+    <div class="note"><b>Nunca</b> lista.remove() dentro del while → ConcurrentModificationException</div>
+  </div>
+
+  <!-- FOR-EACH vs ITERATOR -->
+  <div class="card">
+    <div class="card-header">
+      <div class="dot dot-yellow"></div>
+      <span class="card-title yellow">For-each vs Iterator</span>
+    </div>
+    <pre><span class="cm">// FOR-EACH — simple, solo lectura</span>
+<span class="kw">for</span> (<span class="ty">String</span> s : lista) {
+    <span class="ty">System</span>.out.println(s);  <span class="cm">// OK</span>
+    lista.<span class="fn">remove</span>(s);        <span class="cm">// ❌ EXCEPCIÓN</span>
+}
+
+<span class="cm">// ITERATOR — lectura + eliminación segura</span>
+<span class="ty">Iterator</span>&lt;<span class="ty">String</span>&gt; it = lista.<span class="fn">iterator</span>();
+<span class="kw">while</span> (it.<span class="fn">hasNext</span>()) {
+    <span class="ty">String</span> s = it.<span class="fn">next</span>();
+    <span class="ty">System</span>.out.println(s);  <span class="cm">// OK</span>
+    it.<span class="fn">remove</span>();            <span class="cm">// ✓ seguro</span>
+}</pre>
+  </div>
+
+  <!-- LISTITERATOR -->
+  <div class="card full">
+    <div class="card-header">
+      <div class="dot dot-purple"></div>
+      <span class="card-title purple">ListIterator — versión extendida (puede ir hacia atrás y modificar)</span>
+    </div>
+    <pre><span class="ty">ListIterator</span>&lt;<span class="ty">String</span>&gt; lit = lista.<span class="fn">listIterator</span>();
+
+<span class="cm">// Métodos extra que tiene ListIterator:</span>
+<span class="cm">método              qué hace</span>
+<span class="cm">──────────────────────────────────────────────────────────</span>
+lit.<span class="fn">hasNext</span>()       true si hay siguiente
+lit.<span class="fn">next</span>()          devuelve el siguiente y avanza →
+lit.<span class="fn">hasPrevious</span>()   true si hay anterior
+lit.<span class="fn">previous</span>()      devuelve el anterior y retrocede ←
+lit.<span class="fn">nextIndex</span>()     índice del siguiente elemento
+lit.<span class="fn">previousIndex</span>() índice del anterior elemento
+lit.<span class="fn">remove</span>()        elimina el último devuelto
+lit.<span class="fn">set</span>(e)          reemplaza el último devuelto por e
+lit.<span class="fn">add</span>(e)          inserta e antes de la posición actual
+
+<span class="cm">// Ejemplo: recorrer al revés</span>
+<span class="ty">ListIterator</span>&lt;<span class="ty">String</span>&gt; lit = lista.<span class="fn">listIterator</span>(lista.<span class="fn">size</span>());
+<span class="kw">while</span> (lit.<span class="fn">hasPrevious</span>()) {
+    <span class="ty">System</span>.out.println(lit.<span class="fn">previous</span>());
+}
+
+<span class="cm">// Ejemplo: reemplazar elementos mientras recorres</span>
+<span class="ty">ListIterator</span>&lt;<span class="ty">String</span>&gt; lit2 = lista.<span class="fn">listIterator</span>();
+<span class="kw">while</span> (lit2.<span class="fn">hasNext</span>()) {
+    <span class="ty">String</span> s = lit2.<span class="fn">next</span>();
+    lit2.<span class="fn">set</span>(s.<span class="fn">toUpperCase</span>());  <span class="cm">// convierte cada elemento a mayúsculas</span>
+}</pre>
+    <div class="note"><b>ListIterator</b> solo funciona con listas (ArrayList, LinkedList). El Iterator básico funciona con cualquier Collection (Set, Map.entrySet…)</div>
+  </div>
+
+  <!-- RESUMEN ITERADORES -->
+  <div class="card full">
+    <div class="card-header">
+      <div class="dot dot-green"></div>
+      <span class="card-title green">Cuándo usar cada uno — resumen</span>
+    </div>
+    <pre><span class="cm">situación                                   solución</span>
+<span class="cm">──────────────────────────────────────────────────────────────────</span>
+solo leer la lista                          for-each  (más simple)
+eliminar elementos mientras recorres        Iterator  + it.remove()
+recorrer al revés                           ListIterator.hasPrevious()
+modificar elementos mientras recorres       ListIterator.set()
+eliminar de un Map mientras recorres        Iterator sobre entrySet()
+insertar en medio mientras recorres         ListIterator.add()</pre>
+  </div>
+
+  <!-- ── SEPARADOR ── -->
+  <div class="full" style="border-top: 1px solid var(--border); margin: 0.5rem 0; padding-top: 1rem; display:flex; align-items:center; gap:12px;">
+    <span style="font-family:'Syne',sans-serif; font-size:1.2rem; font-weight:800; color:#fff;">IDs y matrículas <span style="color:var(--accent)">aleatorias</span></span>
+    <span style="color:var(--muted); font-size:11px;">// Random, UUID, String.format</span>
+  </div>
+
+  <!-- RANDOM BÁSICO -->
+  <div class="card">
+    <div class="card-header">
+      <div class="dot dot-cyan"></div>
+      <span class="card-title cyan">Random — números aleatorios</span>
+    </div>
+    <pre><span class="kw">import</span> java.util.Random;
+
+<span class="ty">Random</span> rnd = <span class="kw">new</span> <span class="ty">Random</span>();
+
+<span class="cm">// entero entre 0 y 99 (0 incluido, 100 excluido)</span>
+<span class="kw">int</span> n = rnd.<span class="fn">nextInt</span>(<span class="nm">100</span>);
+
+<span class="cm">// entero entre min y max (ambos incluidos)</span>
+<span class="kw">int</span> min = <span class="nm">1000</span>, max = <span class="nm">9999</span>;
+<span class="kw">int</span> n = rnd.<span class="fn">nextInt</span>(max - min + <span class="nm">1</span>) + min;
+
+<span class="cm">// también hay: nextDouble(), nextBoolean(), nextLong()</span>
+<span class="kw">double</span> d = rnd.<span class="fn">nextDouble</span>();  <span class="cm">// 0.0 a 1.0</span></pre>
+    <div class="note"><b>Atajo sin crear objeto:</b> Math.random() devuelve double entre 0.0 y 1.0<br>
+    → <code>(int)(Math.random() * 100)</code> da entero 0–99</div>
+  </div>
+
+  <!-- NIA / MATRÍCULA NUMÉRICA -->
+  <div class="card">
+    <div class="card-header">
+      <div class="dot dot-green"></div>
+      <span class="card-title green">NIA / matrícula numérica</span>
+    </div>
+    <pre><span class="ty">Random</span> rnd = <span class="kw">new</span> <span class="ty">Random</span>();
+
+<span class="cm">// NIA de 5 dígitos: 10000 – 99999</span>
+<span class="kw">int</span> nia = rnd.<span class="fn">nextInt</span>(<span class="nm">90000</span>) + <span class="nm">10000</span>;
+<span class="cm">// → ej: 47382</span>
+
+<span class="cm">// Con ceros a la izquierda fijos (ej: 00042)</span>
+<span class="ty">String</span> niaPad = <span class="ty">String</span>.<span class="fn">format</span>(<span class="str">"%05d"</span>, rnd.<span class="fn">nextInt</span>(<span class="nm">100000</span>));
+<span class="cm">// → ej: "00873"</span>
+
+<span class="cm">// Matrícula tipo "ALU-00042"</span>
+<span class="ty">String</span> matricula = <span class="str">"ALU-"</span> + <span class="ty">String</span>.<span class="fn">format</span>(<span class="str">"%05d"</span>, rnd.<span class="fn">nextInt</span>(<span class="nm">100000</span>));
+<span class="cm">// → ej: "ALU-00873"</span></pre>
+  </div>
+
+  <!-- UUID -->
+  <div class="card">
+    <div class="card-header">
+      <div class="dot dot-purple"></div>
+      <span class="card-title purple">UUID — ID único universal</span>
+    </div>
+    <pre><span class="kw">import</span> java.util.UUID;
+
+<span class="cm">// genera un ID único garantizado (36 caracteres)</span>
+<span class="ty">String</span> id = <span class="ty">UUID</span>.<span class="fn">randomUUID</span>().<span class="fn">toString</span>();
+<span class="cm">// → "a3f2c1d0-4e5b-11ee-be56-0242ac120002"</span>
+
+<span class="cm">// versión corta: solo los primeros 8 caracteres</span>
+<span class="ty">String</span> idCorto = id.<span class="fn">substring</span>(<span class="nm">0</span>, <span class="nm">8</span>).toUpperCase();
+<span class="cm">// → "A3F2C1D0"</span></pre>
+    <div class="note"><b>UUID</b> es prácticamente imposible que se repita. Ideal para IDs de base de datos.</div>
+  </div>
+
+  <!-- MATRÍCULA CON LETRAS -->
+  <div class="card">
+    <div class="card-header">
+      <div class="dot dot-yellow"></div>
+      <span class="card-title yellow">Matrícula con letras aleatorias</span>
+    </div>
+    <pre><span class="ty">Random</span> rnd = <span class="kw">new</span> <span class="ty">Random</span>();
+
+<span class="cm">// letra aleatoria A-Z</span>
+<span class="kw">char</span> letra = (<span class="kw">char</span>) (<span class="str">'A'</span> + rnd.<span class="fn">nextInt</span>(<span class="nm">26</span>));
+<span class="cm">// → ej: 'K'</span>
+
+<span class="cm">// matrícula tipo "AB-4721" (2 letras + 4 números)</span>
+<span class="kw">char</span> l1 = (<span class="kw">char</span>) (<span class="str">'A'</span> + rnd.<span class="fn">nextInt</span>(<span class="nm">26</span>));
+<span class="kw">char</span> l2 = (<span class="kw">char</span>) (<span class="str">'A'</span> + rnd.<span class="fn">nextInt</span>(<span class="nm">26</span>));
+<span class="kw">int</span>  num = rnd.<span class="fn">nextInt</span>(<span class="nm">9000</span>) + <span class="nm">1000</span>;  <span class="cm">// 1000–9999</span>
+<span class="ty">String</span> mat = <span class="str">""</span> + l1 + l2 + <span class="str">"-"</span> + num;
+<span class="cm">// → ej: "KR-4721"</span></pre>
+  </div>
+
+  <!-- EJEMPLO COMPLETO COMBINADO -->
+  <div class="card full">
+    <div class="card-header">
+      <div class="dot dot-cyan"></div>
+      <span class="card-title cyan">Ejemplo completo — generar lista de alumnos con NIA único</span>
+    </div>
+    <pre><span class="kw">import</span> java.util.*;
+
+<span class="kw">public class</span> <span class="ty">GeneradorAlumnos</span> {
+    <span class="kw">public static</span> <span class="ty">String</span> <span class="fn">generarNIA</span>() {
+        <span class="ty">Random</span> rnd = <span class="kw">new</span> <span class="ty">Random</span>();
+        <span class="kw">return</span> <span class="str">"NIA-"</span> + <span class="ty">String</span>.<span class="fn">format</span>(<span class="str">"%05d"</span>, rnd.<span class="fn">nextInt</span>(<span class="nm">100000</span>));
+    }
+
+    <span class="kw">public static void</span> main(<span class="ty">String</span>[] args) {
+        <span class="cm">// Map que garantiza NIAs únicos: NIA → nombre</span>
+        <span class="ty">Map</span>&lt;<span class="ty">String</span>, <span class="ty">String</span>&gt; alumnos = <span class="kw">new</span> <span class="ty">HashMap</span>&lt;&gt;();
+        <span class="ty">String</span>[] nombres = {<span class="str">"Ana"</span>, <span class="str">"Luis"</span>, <span class="str">"Eva"</span>, <span class="str">"Pep"</span>};
+
+        <span class="kw">for</span> (<span class="ty">String</span> nombre : nombres) {
+            <span class="ty">String</span> nia;
+            <span class="kw">do</span> {
+                nia = <span class="fn">generarNIA</span>();           <span class="cm">// genera uno nuevo</span>
+            } <span class="kw">while</span> (alumnos.<span class="fn">containsKey</span>(nia)); <span class="cm">// repite si ya existe</span>
+            alumnos.<span class="fn">put</span>(nia, nombre);
+        }
+
+        <span class="cm">// imprimir resultado</span>
+        <span class="kw">for</span> (<span class="ty">Map.Entry</span>&lt;<span class="ty">String</span>, <span class="ty">String</span>&gt; e : alumnos.<span class="fn">entrySet</span>()) {
+            <span class="ty">System</span>.out.println(e.<span class="fn">getKey</span>() + <span class="str">" → "</span> + e.<span class="fn">getValue</span>());
+        }
+        <span class="cm">// → NIA-04821 → Ana</span>
+        <span class="cm">// → NIA-72914 → Luis  ...</span>
+    }
+}</pre>
+    <div class="note"><b>Truco:</b> el bucle do-while con containsKey garantiza que no se repita ningún NIA en el mapa.</div>
+  </div>
+
+  <!-- RESUMEN RÁPIDO -->
+  <div class="card full">
+    <div class="card-header">
+      <div class="dot dot-green"></div>
+      <span class="card-title green">Resumen — qué usar según el caso</span>
+    </div>
+    <pre><span class="cm">necesito...                          uso</span>
+<span class="cm">────────────────────────────────────────────────────────────────</span>
+número aleatorio entre 0 y N-1       rnd.nextInt(N)
+número aleatorio entre min y max     rnd.nextInt(max-min+1) + min
+NIA con ceros fijos (ej: 00042)      String.format("%05d", numero)
+matrícula con prefijo (ALU-00042)    "ALU-" + String.format("%05d", n)
+letra aleatoria A-Z                  (char)('A' + rnd.nextInt(26))
+ID único garantizado (no repetible)  UUID.randomUUID().toString()
+ID corto y legible                   UUID...toString().substring(0,8)</pre>
+  </div>
+
+</div>
+</body>
+</html>
