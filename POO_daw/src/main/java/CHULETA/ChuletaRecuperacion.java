@@ -40,7 +40,7 @@ public class ChuletaRecuperacion {
     ///   “La recursión no termina y puede producir un StackOverflowError.”
     ///
     ///   Si cae matrices:
-    ///   “En una matriz, el primer índice es la fila y el segundo la columna: matriz[i][j].”
+    ///   “En una matriz, el primer índice es la fila y el segundo la columna: matriz[i][].”
     ///
     ///   Si cae vector/array:
     ///   “Se recorre normalmente con un for desde 0 hasta length - 1.”
