@@ -4,26 +4,39 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
+import java.io.IOException;
+
 public class HelloController {
-
-    static int cont;
-
     @FXML
     private Label welcomeText;
-
     @FXML
-    private Button contador;
-
+    private Button pruebaClickButton;
     @FXML
-    private Label contando;
+    private Label contadorLabel;
+    static Contador contador = new Contador();
 
     @FXML
     public void initialize() {
-        contador.setOnAction(e -> contando.setText(Integer.toString(++cont)));
+        pruebaClickButton.setOnAction(e -> {
+            contador.contar();
+            contadorLabel.setText(Integer.toString(contador.getContador()));
+        });
     }
 
     @FXML
     protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
+        welcomeText.setText("¡Holaaaa!");
     }
+
+    public void resetClickButton() {
+
+        contador.setContador(0);
+        contadorLabel.setText("Contador reseteado a 0");
+
+    }
+
+    public void pantalla2Button () throws IOException {
+        HelloApplication.setRoot("pantalla2-view");
+    }
+
 }
