@@ -10,6 +10,8 @@ module org.example.demofx {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires java.desktop;
+    requires javafx.base;
 
     opens org.example.demofx to javafx.fxml;
     exports org.example.demofx;
