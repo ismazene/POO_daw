@@ -1,4 +1,4 @@
-module org.example.demofx {
+module org.example.demofx_estudiantes {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
@@ -10,10 +10,8 @@ module org.example.demofx {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
-    requires java.desktop;
-    requires javafx.base;
     requires java.sql;
 
-    opens org.example.demofx to javafx.fxml;
-    exports org.example.demofx;
+    opens org.example.demofx_estudiantes to javafx.fxml;
+    exports org.example.demofx_estudiantes;
 }
