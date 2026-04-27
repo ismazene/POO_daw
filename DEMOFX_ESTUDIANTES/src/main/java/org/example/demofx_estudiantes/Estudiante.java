@@ -13,7 +13,7 @@ public class Estudiante {
         this.fecha_nacimiento = fecha_nacimiento;
     }
 
-    public int getNIA() {
+    public Integer getNIA() {
         return NIA;
     }
 

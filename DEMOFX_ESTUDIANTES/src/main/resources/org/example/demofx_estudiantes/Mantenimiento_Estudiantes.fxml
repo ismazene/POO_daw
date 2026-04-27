@@ -18,6 +18,7 @@
       <Button layoutX="300.0" layoutY="258.0" mnemonicParsing="false" onAction="#EliminarButton" text="Eliminar" />
       <DatePicker fx:id="FechaDatePicker" layoutX="213.0" layoutY="429.0" promptText="Fecha de nacimiento" />
       <Button fx:id="BotonInsertar" layoutX="242.0" layoutY="476.0" mnemonicParsing="false" onAction="#InsertarButton" text="Insertar" />
-      <Button fx:id="BotonGuardar" layoutX="300.0" layoutY="476.0" mnemonicParsing="false" onAction="#GuardarButton" text="Guardar" />
+      <Button fx:id="BotonGuardar" disable="true" layoutX="300.0" layoutY="476.0" mnemonicParsing="false" onAction="#GuardarButton" text="Guardar" />
+      <Label fx:id="IDlabel" layoutX="286.0" layoutY="302.0" text="Label" />
    </children>
 </AnchorPane>

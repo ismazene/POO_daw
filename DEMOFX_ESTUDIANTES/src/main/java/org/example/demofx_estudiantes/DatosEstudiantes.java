@@ -92,4 +92,21 @@ public class DatosEstudiantes {
 
 
     }
+
+     public static void guardar(Connection connection, Estudiante estudiante) {
+
+        String query = "UPDATE estudiante SET " +
+                "nia = '" + estudiante.getNIA() + "', " +
+                "nombre = '" + estudiante.getNombre() + "', " +
+                "fecha_nacimiento = '" + estudiante.getFecha_nacimiento() + "' " +
+                "WHERE nia = '" + estudiante.getNIA() + "'";
+
+    }
+
+    public static void insertar(Connection db, Estudiante e) {
+    }
+
+    public static void eliminar(Connection db, Integer nia) {
+
+    }
 }
