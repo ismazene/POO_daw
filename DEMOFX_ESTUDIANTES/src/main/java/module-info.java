@@ -1,4 +1,4 @@
-module org.example.demofx_estudiantes {
+module org.example.demop2 {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
@@ -12,6 +12,6 @@ module org.example.demofx_estudiantes {
     requires com.almasb.fxgl.all;
     requires java.sql;
 
-    opens org.example.demofx_estudiantes to javafx.fxml;
     exports org.example.demofx_estudiantes;
+    opens org.example.demofx_estudiantes to javafx.fxml;
 }

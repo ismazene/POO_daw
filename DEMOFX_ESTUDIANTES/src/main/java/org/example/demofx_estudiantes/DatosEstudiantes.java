@@ -7,15 +7,6 @@ import java.sql.*;
 import java.time.LocalDate;
 
 public class DatosEstudiantes {
-    static void main(String[] args) {
-
-        Connection bd = conexion();
-        System.out.println("Realizando consultas...");
-        modificar(bd);
-        consulta(bd);
-        desconectar(bd);
-
-    }
 
     public static Connection conexion() {
         Connection conexion;
@@ -49,12 +40,13 @@ public class DatosEstudiantes {
         }
     }
 
-    public static ObservableList<Estudiante> consulta(Connection conexion){
+    public static ObservableList<Estudiante> consulta (Connection conexion){
 
-        ObservableList<Estudiante> listaEstudiante = FXCollections.observableArrayList();
+        ObservableList<Estudiante> listaEstudiantes = FXCollections.observableArrayList();
 
         String query = "SELECT * FROM estudiante";
 
+        //necesitamos dos variables de tipo Statement y ResultSet para realizar la consulta y guardar la respuesta
         Statement stmt;
         ResultSet respuesta;
 
@@ -62,23 +54,25 @@ public class DatosEstudiantes {
             stmt = conexion.createStatement();
             respuesta = stmt.executeQuery(query);
 
-            while (respuesta.next()) {
+            while (respuesta.next()){ //recorremos todas las filas existentes en la tabla y las imprimimos
                 int nia = respuesta.getInt("nia");
                 String nombre = respuesta.getString("nombre");
                 LocalDate fecha_nacimiento = respuesta.getDate("fecha_nacimiento").toLocalDate();
-                listaEstudiante.add(new Estudiante(nia,nombre,fecha_nacimiento));
+                listaEstudiantes.add(new Estudiante(nia,nombre,fecha_nacimiento));
             }
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             throw new RuntimeException(e);
         }
-        return listaEstudiante;
+
+        return listaEstudiantes;
     }
 
-    public static void modificar(Connection conexion){
+    public static void guardar(Connection conexion, Estudiante estudiante){
 
-        String query = "UPDATE estudiante SET nombre = 'Isma' WHERE nombre = 'Ismael'";
+        String query = "UPDATE estudiante set nia = '" + estudiante.getNia() + "', nombre = '" + estudiante.getNombre() + "'," +
+                "fecha_nacimiento = '" + estudiante.getFecha_nacimiento() + "' WHERE nia = '" + estudiante.getNia() + "'";
 
         Statement stmt;
 
@@ -89,24 +83,34 @@ public class DatosEstudiantes {
             System.out.println(e.getMessage());
             throw new RuntimeException(e);
         }
+    }
+    public static boolean insertar(Connection conexion, Estudiante estudiante){
+        //INSERT INTO `estudiante` (`nia`, `nombre`, `fecha_nacimiento`) VALUES (1234, 'Patricia', '2026-04-20');
 
+        String query = "INSERT INTO estudiante VALUES (" + estudiante.getNia() + ",'" + estudiante.getNombre()+ "','" +  estudiante.getFecha_nacimiento() + "')";
+        Statement stmt;
 
+        try {
+            stmt = conexion.createStatement();
+            stmt.executeUpdate(query);
+            return  true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 
-     public static void guardar(Connection connection, Estudiante estudiante) {
+    public static void borrar(Connection connection, Estudiante estudiante) {
+        String query = "DELETE FROM estudiante WHERE nia = '" + estudiante.getNia() + "'";
 
-        String query = "UPDATE estudiante SET " +
-                "nia = '" + estudiante.getNIA() + "', " +
-                "nombre = '" + estudiante.getNombre() + "', " +
-                "fecha_nacimiento = '" + estudiante.getFecha_nacimiento() + "' " +
-                "WHERE nia = '" + estudiante.getNIA() + "'";
+        Statement stmt;
 
-    }
-
-    public static void insertar(Connection db, Estudiante e) {
-    }
-
-    public static void eliminar(Connection db, Integer nia) {
-
+        try {
+            stmt = connection.createStatement();
+            stmt.executeUpdate(query);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 }

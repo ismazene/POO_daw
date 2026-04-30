@@ -3,22 +3,23 @@ package org.example.demofx_estudiantes;
 import java.time.LocalDate;
 
 public class Estudiante {
-    private Integer NIA;
+
+    private Integer nia;
     private String nombre;
     private LocalDate fecha_nacimiento;
 
-    public Estudiante(Integer NIA, String nombre, LocalDate fecha_nacimiento) {
-        this.NIA = NIA;
-        this.nombre = nombre;
+    public Estudiante(Integer nia, String nombre, LocalDate fecha_nacimiento) {
+        this.nia = nia;
         this.fecha_nacimiento = fecha_nacimiento;
+        this.nombre = nombre;
     }
 
-    public Integer getNIA() {
-        return NIA;
+    public Integer getNia() {
+        return nia;
     }
 
-    public void setNIA(int NIA) {
-        this.NIA = NIA;
+    public void setNia(Integer nia) {
+        this.nia = nia;
     }
 
     public String getNombre() {
@@ -40,9 +41,10 @@ public class Estudiante {
     @Override
     public String toString() {
         return "Estudiante{" +
-                "NIA=" + NIA +
+                "nia=" + nia +
                 ", nombre='" + nombre + '\'' +
                 ", fecha_nacimiento=" + fecha_nacimiento +
                 '}';
     }
+
 }

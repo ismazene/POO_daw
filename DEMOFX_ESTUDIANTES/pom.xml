@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>DEMOFX_ESTUDIANTES</artifactId>
+    <artifactId>demoP2</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>DEMOFX_ESTUDIANTES</name>
+    <name>demoP2</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -138,8 +138,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>org.example.demofx_estudiantes/org.example.demofx_estudiantes.HelloApplication
-                            </mainClass>
+                            <mainClass>org.example.demop2/org.example.demop2.HelloApplication</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>

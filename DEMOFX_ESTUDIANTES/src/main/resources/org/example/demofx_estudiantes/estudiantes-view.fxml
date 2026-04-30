@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" prefHeight="505.0" prefWidth="604.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.demop2.EstudiantesController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+
+    <Label text="Mantenimiento de Estudiantes">
+      <font>
+         <Font name="System Bold" size="18.0" />
+      </font></Label>
+   <TableView fx:id="estudianteTableView" prefHeight="200.0" prefWidth="200.0">
+     <columns>
+       <TableColumn fx:id="niaTableColumn" prefWidth="75.0" text="NIA" />
+       <TableColumn fx:id="nombreTableColumn" prefWidth="75.0" text="Nombre" />
+         <TableColumn fx:id="fechaTableColumn" prefWidth="75.0" text="Fecha nacimiento" />
+     </columns>
+      <columnResizePolicy>
+         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+      </columnResizePolicy>
+   </TableView>
+   <HBox alignment="TOP_CENTER" prefHeight="5.0" prefWidth="259.0">
+      <children>
+          <Button onAction="#modificarClickButton" text="Modificar" />
+         <Button mnemonicParsing="false" onAction="#eliminarClickButton" text="Eliminar" />
+      </children>
+   </HBox>
+   <Label fx:id="mensajeLabel" />
+   <TextField fx:id="niaTextField" promptText="Introduce NIA..." />
+   <TextField fx:id="nombreTextField" promptText="Introduce NOMBRE..." />
+   <DatePicker fx:id="fechaDatePicker" promptText="Fecha nacimiento" />
+   <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
+      <children>
+         <Button fx:id="insertarButton" mnemonicParsing="false" onAction="#insertarClickButton" text="Insertar" />
+         <Button fx:id="guardarButton" disable="true" mnemonicParsing="false" onAction="#guardarClickButton" text="Guardar" />
+      </children>
+   </HBox>
+</VBox>
